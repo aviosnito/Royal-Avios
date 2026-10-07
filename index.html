@@ -3467,6 +3467,7 @@ function renderMega(){
   panel.innerHTML = backBar + `<div class="mega-cols">${cols.join("")}</div>`;
 }
 function openMega(){ closeSearch&&closeSearch(); MEGA.catId=null; MEGA.subId=null; renderMega(); $("#mega").classList.add("on"); $("#mega-drop").classList.add("on"); document.body.classList.add("mega-open"); }
+function toggleMega(){ if($("#mega").classList.contains("on")) closeMega(); else openMega(); }
 function closeMega(){ $("#mega").classList.remove("on"); $("#mega-drop").classList.remove("on"); document.body.classList.remove("mega-open"); }
 function megaPickCat(id){ MEGA.catId=id; MEGA.subId=null; const c=findCat(id); if(c && !c.subs){ /* sin subs: muestra productos */ } renderMega(); }
 function megaPickSub(catId, subId){ MEGA.catId=catId; MEGA.subId=subId; renderMega(); }
@@ -3634,9 +3635,9 @@ function setQty(n){
 const SB_URL="https://posikudwhcabckozuqyc.supabase.co";
 const SB_KEY="sb_publishable_nkIylDinGLzY_Z3o4pnidg_t8_cWcck";
 const OWNER_EMAIL="dueno@royalavios.com";
-const EMAILJS_PUBLIC_KEY="COMPLETAR_DESPUES";
-const EMAILJS_SERVICE_ID="COMPLETAR_DESPUES";
-const EMAILJS_TEMPLATE_ID="COMPLETAR_DESPUES";
+const EMAILJS_PUBLIC_KEY="eoozh1vDV-0Pcva7x";
+const EMAILJS_SERVICE_ID="service_x0c2gjs";
+const EMAILJS_TEMPLATE_ID="template_gx259qp";
 if(window.emailjs && EMAILJS_PUBLIC_KEY) window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 function envioLineas(e){
   if(!e) return "";
@@ -4159,7 +4160,7 @@ document.addEventListener("click", e=>{
   else if(a==="toggle-pass") togglePass(t.dataset.target);
   else if(a==="open-admin") openAdmin();
   else if(a==="open-catalog"){ e.preventDefault(); closeMega(); openCatalog(); }
-  else if(a==="open-mega") openMega();
+  else if(a==="open-mega") toggleMega();
   else if(a==="close-mega") closeMega();
   else if(a==="mega-cat") megaPickCat(t.dataset.cat);
   else if(a==="mega-sub") megaPickSub(t.dataset.cat, t.dataset.sub);
