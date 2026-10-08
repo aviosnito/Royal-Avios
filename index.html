@@ -639,7 +639,7 @@ body.mega-open .cats-btn .chev{transform:rotate(180deg)}
   .hd-actions>*{flex-shrink:0}
   .hd-actions .cart-btn{display:none}
   .brand-btn{flex-shrink:0}
-  .cart-fab{display:flex;position:fixed;right:0;top:22vh;z-index:38;width:52px;height:52px;padding-right:6px;border-radius:999px 0 0 999px;background:var(--paper);color:var(--ink);align-items:center;justify-content:center;box-shadow:-4px 4px 18px -8px rgba(0,0,0,.22);border:1px solid var(--line);border-right:0;cursor:pointer}
+  .cart-fab{display:flex;position:fixed;right:0;top:calc(22vh + 78px);z-index:38;width:52px;height:52px;padding-right:6px;border-radius:999px 0 0 999px;background:var(--paper);color:var(--ink);align-items:center;justify-content:center;box-shadow:-4px 4px 18px -8px rgba(0,0,0,.22);border:1px solid var(--line);border-right:0;cursor:pointer}
   .cart-edge-line{display:block;position:fixed;right:0;top:64px;bottom:0;width:1px;background:var(--line);z-index:37;pointer-events:none}
   .cart-fab .cart-ic{width:24px;height:24px}
   .cart-fab .cart-ic path{fill:currentColor}
@@ -1266,10 +1266,51 @@ body.sb-open{overflow:hidden!important;position:fixed!important;width:100%!impor
 /* Cartel "Sin stock" en la tabla de catálogo: esquinas levemente hacia adentro */
 #app .cat-flag{border-radius:6px!important}
 
+/* Margen mínimo garantizado en los bordes de la grilla de productos y de categorías (celular) */
+@media(max-width:640px){
+  #app .cat-products.wrap,#app .cshow.wrap{padding-left:max(7px, env(safe-area-inset-left, 0px))!important;padding-right:max(7px, env(safe-area-inset-right, 0px))!important}
+}
+
+
+/* Enlace de contacto (Instagram) y botones de copiar: esquinas levemente hacia adentro */
+#app .contact-link{border-radius:10px!important}
+#app .copy-btn{border-radius:10px!important}
+
+/* Subrayar "Ver catálogo completo" para que se note que es un link */
+.ft-net a[data-action="open-catalog"]{text-decoration:underline;text-underline-offset:3px}
+
 
 #app .add-btn{border-radius:10px!important}
 #app .add-cart-btn .ic{width:35px;height:28px}
 #app .checkout{border-radius:10px!important}
+
+/* Carrito flotante (sidebar/pestaña docked al borde): restaurar el semi-pill original, hoy perdía contra el matapuntas y salía cuadrado */
+#app .cart-fab{border-radius:999px 0 0 999px!important}
+@media(min-width:641px){ #app .cart-fab{border-radius:999px!important} }
+
+/* Punto 2: sacar el rectángulo del botón "ver carrito" en la ficha y del link de Instagram en contacto; zoom en su lugar, igual que Iniciar sesión */
+#app .add-cart-btn{border:0!important;transition:transform .2s cubic-bezier(.34,1.5,.64,1)!important}
+.add-cart-btn:hover,.add-cart-btn:focus-visible{transform:scale(1.08)}
+#app .contact-link{border:0!important;transition:transform .2s cubic-bezier(.34,1.5,.64,1)!important}
+.contact-link:hover,.contact-link:focus-visible{transform:scale(1.04)}
+
+/* Punto 3: los círculos de color de la ficha (ya traen el color de relleno inline) perdían su redondeo contra el matapuntas */
+#app .swatch{border-radius:999px!important}
+
+/* Punto 5: sacar el cuadrado de la lupa de zoom; el zoom en sí sigue andando por JS, no depende de este elemento */
+#app .zoom-hint{display:none!important}
+
+/* "Agregado" en el botón: tilde recto (mismo svg .chk de los pasos) en vez del símbolo ✓ */
+#app .add-btn.flash-ok{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+#app .add-btn .chk{width:16px;height:16px;flex-shrink:0}
+
+/* Perfil dueño: botón "Agregar al carrito" bloqueado, con aviso al pasar el cursor */
+#app .add-btn.locked{position:relative;opacity:.5;cursor:not-allowed;background:var(--muted2)!important;border-color:var(--muted2)!important}
+#app .add-btn.locked:hover{background:var(--muted2)!important}
+#app .add-btn.locked[data-tip]::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%) translateY(4px);background:var(--ink);color:#fff;font-size:12px;font-weight:600;white-space:nowrap;padding:7px 12px;border-radius:8px!important;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:5}
+#app .add-btn.locked[data-tip]::before{content:"";position:absolute;left:50%;bottom:calc(100% + 5px);transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--ink);opacity:0;pointer-events:none;transition:opacity .15s;z-index:5}
+#app .add-btn.locked[data-tip]:hover::after,#app .add-btn.locked[data-tip]:focus-visible::after{opacity:1;transform:translateX(-50%) translateY(0)}
+#app .add-btn.locked[data-tip]:hover::before,#app .add-btn.locked[data-tip]:focus-visible::before{opacity:1}
 </style>
 </head>
 <body>
@@ -1295,9 +1336,9 @@ body.sb-open{overflow:hidden!important;position:fixed!important;width:100%!impor
         </button>
         <div class="auth-area" id="auth-area"></div>
         <button class="cart-btn" data-action="open-cart" aria-label="Abrir carrito">
-          <svg class="cart-ic-r" viewBox="0 0 38.14 29.96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M36.14,9.95v18.01H2V9.95h34.14M38.14,7.95H0v22.01h38.14V7.95h0Z"/>
-            <path class="stroke" d="M25.63,13.94V4.66c-.2-.32-2.19-3.39-5.99-3.65-2.79-.19-5.5,1.22-7.03,3.64v9.27"/>
+          <svg class="cart-ic-r" viewBox="0 0 38.14 29.97" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M36.14,9.96v18.01H2V9.96h34.14M36.21,7.96H1.96c-1.08,0-1.96.88-1.96,1.96v17.81c0,1.24,1,2.24,2.24,2.24h33.75c1.19,0,2.16-.97,2.16-2.16V9.89c0-1.07-.86-1.93-1.93-1.93Z"/>
+            <path class="stroke" d="M25.63,13.95V4.67c-.2-.32-2.19-3.39-5.99-3.65-2.79-.19-5.5,1.22-7.03,3.64v9.27"/>
           </svg>
           <span class="badge hidden" id="badge">0</span>
         </button>
@@ -1323,9 +1364,9 @@ body.sb-open{overflow:hidden!important;position:fixed!important;width:100%!impor
 
   <div class="cart-edge-line" aria-hidden="true"></div>
   <button class="cart-fab" data-action="open-cart" aria-label="Abrir carrito">
-    <svg class="cart-ic" viewBox="0 0 38.14 29.96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M36.14,9.95v18.01H2V9.95h34.14M38.14,7.95H0v22.01h38.14V7.95h0Z"/>
-      <path class="stroke" d="M25.63,13.94V4.66c-.2-.32-2.19-3.39-5.99-3.65-2.79-.19-5.5,1.22-7.03,3.64v9.27"/>
+    <svg class="cart-ic" viewBox="0 0 38.14 29.97" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M36.14,9.96v18.01H2V9.96h34.14M36.21,7.96H1.96c-1.08,0-1.96.88-1.96,1.96v17.81c0,1.24,1,2.24,2.24,2.24h33.75c1.19,0,2.16-.97,2.16-2.16V9.89c0-1.07-.86-1.93-1.93-1.93Z"/>
+      <path class="stroke" d="M25.63,13.95V4.67c-.2-.32-2.19-3.39-5.99-3.65-2.79-.19-5.5,1.22-7.03,3.64v9.27"/>
     </svg>
     <span class="badge hidden" id="badge-fab">0</span>
   </button>
@@ -1381,19 +1422,15 @@ body.sb-open{overflow:hidden!important;position:fixed!important;width:100%!impor
         <div>
           <p class="ft-h">Redes</p>
           <div class="ft-net">
-            <a href="https://instagram.com/aviosnito" target="_blank" rel="noopener">
+            <a href="https://instagram.com/royal.avios" target="_blank" rel="noopener">
               <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-              @aviosnito
+              @royal.avios
             </a>
-            <a href="https://tiktok.com/@aviosflores" target="_blank" rel="noopener">
+            <a href="https://tiktok.com/@royal.avios" target="_blank" rel="noopener">
               <svg class="ic ic-fill" viewBox="0 0 24 24"><path d="M16.7 3c.28 1.9 1.5 3.4 3.3 3.68V9.3c-1.2 0-2.35-.38-3.3-1v6.28c0 3.27-2.66 5.92-5.94 5.92a5.93 5.93 0 0 1 0-11.86c.32 0 .63.03.94.08v2.78a3.16 3.16 0 1 0 2.22 3.02V3h2.78Z"/></svg>
-              @aviosflores
+              @royal.avios
             </a>
           </div>
-        </div>
-        <div>
-          <p class="ft-h">Contacto</p>
-          <div class="ft-net"><a href="https://wa.me/5491140417455" target="_blank" rel="noopener">+54 9 11 4041-7455</a></div>
         </div>
         <div>
           <p class="ft-h">Catálogo</p>
@@ -1447,17 +1484,10 @@ body.sb-open{overflow:hidden!important;position:fixed!important;width:100%!impor
       <p class="modal-eyebrow">Contacto</p>
       <h2 class="modal-h2">Escribinos</h2>
       <p class="modal-p">Seguinos y consultá por nuestros avíos. Respondemos por mensaje directo.</p>
-      <a class="contact-link ig" href="https://instagram.com/royalavios" target="_blank" rel="noopener">
+      <a class="contact-link ig" href="https://instagram.com/royal.avios" target="_blank" rel="noopener">
         <span class="left">
           <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="url(#ig-grad)" stroke-width="1.7"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-          <span><span class="net">Instagram</span><span class="handle" style="display:block">@royalavios</span></span>
-        </span>
-        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
-      <a class="contact-link wa" href="https://wa.me/COMPLETAR_DESPUES" target="_blank" rel="noopener">
-        <span class="left">
-          <svg class="ic ic-fill" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.1.55 4.06 1.6 5.83L2 22l4.4-1.15a9.9 9.9 0 0 0 5.64 1.72h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.14c-.24.68-1.42 1.32-1.95 1.36-.5.05-.97.24-3.26-.68-2.74-1.08-4.5-3.87-4.63-4.05-.14-.18-1.11-1.48-1.11-2.82s.7-2 .95-2.28c.25-.27.54-.34.72-.34.18 0 .36.002.52.01.17.007.39-.06.61.47.24.57.79 1.96.86 2.1.07.14.12.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.28-.12.55.16.27.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.21 1.37.27.14.43.12.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.6.76 1.87.9.27.14.45.2.52.32.07.11.07.64-.17 1.32Z"/></svg>
-          <span><span class="net">WhatsApp</span><span class="handle" style="display:block">COMPLETAR_DESPUES</span></span>
+          <span><span class="net">Instagram</span><span class="handle" style="display:block">@royal.avios</span></span>
         </span>
         <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
@@ -1580,70 +1610,70 @@ const LIGHT = ["#F3F1EC","#E4D9C4","#E7E1D6","#D8CCB4","#CBB893","#C7CACE"];
 /* ================= Catálogo ================= */
 const CATS = [
   { id:"puntillas", idx:"01", name:"Puntillas", blurb:"Puntillas y encajes por metro.", direct:true, products:[
-    { id:"RY-8", title:"N° 8", img:"8blanco.png", imgs:{"Blanco":"8blanco.png","Negro":"8negro.png"}, colors:cc("blanco","negro"), price:0, desc:"" },
-    { id:"RY-9", title:"N° 9", img:"9blanco.png", imgs:{"Blanco":"9blanco.png","Negro":"9negro.png"}, colors:cc("blanco","negro"), price:0, desc:"" },
-    { id:"RY-13", title:"N° 13", img:"13blanco.png", imgs:{"Blanco":"13blanco.png","Negro":"13negro.png"}, colors:cc("blanco","negro"), price:0, desc:"" },
-    { id:"RY-342", title:"N° 342", img:"342negro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-343", title:"N° 343", img:"343blanco.png", colors:cc("blanco"), price:0, desc:"" },
+    { id:"RY-8", title:"N° 8", img:"8blanco.jpg", imgs:{"Blanco":"8blanco.jpg","Negro":"8negro.jpg"}, colors:cc("blanco","negro"), price:0, desc:"" },
+    { id:"RY-9", title:"N° 9", img:"9blanco.jpg", imgs:{"Blanco":"9blanco.jpg","Negro":"9negro.jpg"}, colors:cc("blanco","negro"), price:0, desc:"" },
+    { id:"RY-13", title:"N° 13", img:"13blanco.jpg", imgs:{"Blanco":"13blanco.jpg","Negro":"13negro.jpg"}, colors:cc("blanco","negro"), price:0, desc:"" },
+    { id:"RY-342", title:"N° 342", img:"342negro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-343", title:"N° 343", img:"343blanco.jpg", colors:cc("blanco"), price:0, desc:"" },
     { id:"RY-345", title:"N° 345", img:"345blanco.png", colors:cc("blanco"), price:0, desc:"" },
-    { id:"RY-346", title:"N° 346", img:"346beige.png", colors:cc("beige"), price:0, desc:"" },
-    { id:"RY-430", title:"N° 430", img:"430negro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-431", title:"N° 431", img:"431blanco.png", colors:cc("blanco"), price:0, desc:"" },
-    { id:"RY-432", title:"N° 432", img:"432negro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-433", title:"N° 433", img:"433blanco.png", colors:cc("blanco"), price:0, desc:"" },
-    { id:"RY-436", title:"N° 436", img:"436negro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-437", title:"N° 437", img:"437blanco.png", colors:cc("blanco"), price:0, desc:"" },
-    { id:"RY-438", title:"N° 438", img:"438negro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-439", title:"N° 439", img:"439blanco.png", colors:cc("blanco"), price:0, desc:"" },
-    { id:"RY-474", title:"N° 474", img:"474negro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-475", title:"N° 475", img:"475blanco.png", colors:cc("blanco"), price:0, desc:"" },
-    { id:"RY-476", title:"N° 476", img:"476negro.png", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-346", title:"N° 346", img:"346beige.jpg", colors:cc("beige"), price:0, desc:"" },
+    { id:"RY-430", title:"N° 430", img:"430negro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-431", title:"N° 431", img:"431blanco.jpg", colors:cc("blanco"), price:0, desc:"" },
+    { id:"RY-432", title:"N° 432", img:"432negro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-433", title:"N° 433", img:"433blanco.jpg", colors:cc("blanco"), price:0, desc:"" },
+    { id:"RY-436", title:"N° 436", img:"436negro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-437", title:"N° 437", img:"437blanco.jpg", colors:cc("blanco"), price:0, desc:"" },
+    { id:"RY-438", title:"N° 438", img:"438negro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-439", title:"N° 439", img:"439blanco.jpg", colors:cc("blanco"), price:0, desc:"" },
+    { id:"RY-474", title:"N° 474", img:"474negro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-475", title:"N° 475", img:"475blanco.jpg", colors:cc("blanco"), price:0, desc:"" },
+    { id:"RY-476", title:"N° 476", img:"476negro.jpg", colors:cc("negro"), price:0, desc:"" },
     { id:"RY-477", title:"N° 477", img:"477blanco.png", colors:cc("blanco"), price:0, desc:"" },
-    { id:"RY-478", title:"N° 478", img:"478negro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-493", title:"N° 493", img:"493negro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-494", title:"N° 494", img:"494negro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-U01", title:"N° U01", img:"u01.png", colors:[], price:0, desc:"" },
-    { id:"RY-U02", title:"N° U02", img:"u02.png", colors:[], price:0, desc:"" },
-    { id:"RY-U08", title:"N° U08", img:"u08.png", colors:[], price:0, desc:"" },
-    { id:"RY-U09", title:"N° U09", img:"u09.png", colors:[], price:0, desc:"" },
-    { id:"RY-U10", title:"N° U10", img:"u10.png", colors:[], price:0, desc:"" },
-    { id:"RY-U11", title:"N° U11", img:"u11.png", colors:[], price:0, desc:"" },
-    { id:"RY-U12", title:"N° U12", img:"u12.png", colors:[], price:0, desc:"" },
-    { id:"RY-U13", title:"N° U13", img:"u13.png", colors:[], price:0, desc:"" },
-    { id:"RY-U14", title:"N° U14", img:"u14.png", colors:[], price:0, desc:"" },
-    { id:"RY-U36", title:"N° U36", img:"u36.png", colors:[], price:0, desc:"" },
-    { id:"RY-U37", title:"N° U37", img:"u37.png", colors:[], price:0, desc:"" },
-    { id:"RY-U38", title:"N° U38", img:"u38.png", colors:[], price:0, desc:"" },
-    { id:"RY-U39", title:"N° U39", img:"u39.png", colors:[], price:0, desc:"" },
-    { id:"RY-U40", title:"N° U40", img:"u40.png", colors:[], price:0, desc:"" },
-    { id:"RY-U41", title:"N° U41", img:"u41.png", colors:[], price:0, desc:"" },
-    { id:"RY-U42", title:"N° U42", img:"u42.png", colors:[], price:0, desc:"" },
-    { id:"RY-U43", title:"N° U43", img:"u43.png", colors:[], price:0, desc:"" },
-    { id:"RY-U44", title:"N° U44", img:"u44.png", colors:[], price:0, desc:"" },
-    { id:"RY-U45", title:"N° U45", img:"u45.png", colors:[], price:0, desc:"" },
-    { id:"RY-U63", title:"N° U63", img:"u63.png", colors:[], price:0, desc:"" },
-    { id:"RY-U64", title:"N° U64", img:"u64.png", colors:[], price:0, desc:"" },
-    { id:"RY-U65", title:"N° U65", img:"u65.png", colors:[], price:0, desc:"" },
-    { id:"RY-U66", title:"N° U66", img:"u66.png", colors:[], price:0, desc:"" },
-    { id:"RY-U67", title:"N° U67", img:"u67.png", colors:[], price:0, desc:"" },
-    { id:"RY-U68", title:"N° U68", img:"u68.png", colors:[], price:0, desc:"" },
+    { id:"RY-478", title:"N° 478", img:"478negro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-493", title:"N° 493", img:"493negro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-494", title:"N° 494", img:"494negro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-U01", title:"N° U01", img:"u01.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U02", title:"N° U02", img:"u02.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U08", title:"N° U08", img:"u08.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U09", title:"N° U09", img:"u09.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U10", title:"N° U10", img:"u10.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U11", title:"N° U11", img:"u11.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U12", title:"N° U12", img:"u12.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U13", title:"N° U13", img:"u13.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U14", title:"N° U14", img:"u14.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U36", title:"N° U36", img:"u36.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U37", title:"N° U37", img:"u37.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U38", title:"N° U38", img:"u38.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U39", title:"N° U39", img:"u39.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U40", title:"N° U40", img:"u40.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U41", title:"N° U41", img:"u41.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U42", title:"N° U42", img:"u42.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U43", title:"N° U43", img:"u43.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U44", title:"N° U44", img:"u44.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U45", title:"N° U45", img:"u45.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U63", title:"N° U63", img:"u63.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U64", title:"N° U64", img:"u64.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U65", title:"N° U65", img:"u65.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U66", title:"N° U66", img:"u66.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U67", title:"N° U67", img:"u67.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-U68", title:"N° U68", img:"u68.jpg", colors:[], price:0, desc:"" },
   ]},
   { id:"jean", idx:"02", name:"Apliques de Jean", blurb:"Bordados, tachas y parches para denim.", direct:true, products:[
-    { id:"RY-204", title:"N° 204", img:"204.png", colors:[
+    { id:"RY-204", title:"N° 204", img:"204.jpg", colors:[
   ], price:0, desc:"" },
-    { id:"RY-248", title:"N° 248", img:"248.png", colors:[], price:0, desc:"" },
-    { id:"RY-249", title:"N° 249", img:"249.png", colors:[], price:0, desc:"" },
-    { id:"RY-254", title:"N° 254", img:"254.png", colors:[], price:0, desc:"" },
-    { id:"RY-255", title:"N° 255", img:"255.png", colors:[], price:0, desc:"" },
-    { id:"RY-256", title:"N° 256", img:"256.png", colors:[], price:0, desc:"" },
-    { id:"RY-257", title:"N° 257", img:"257.png", colors:[], price:0, desc:"" },
-    { id:"RY-258", title:"N° 258", img:"258.png", colors:[], price:0, desc:"" },
-    { id:"RY-278", title:"N° 278", img:"278.png", colors:[], price:0, desc:"" },
-    { id:"RY-279", title:"N° 279", img:"279.png", colors:[], price:0, desc:"" },
-    { id:"RY-280", title:"N° 280", img:"280.png", colors:[], price:0, desc:"" },
-    { id:"RY-281", title:"N° 281", img:"281.png", colors:[], price:0, desc:"" },
-    { id:"RY-282", title:"N° 282", img:"282.png", colors:[], price:0, desc:"" },
-    { id:"RY-283", title:"N° 283", img:"283.png", colors:[], price:0, desc:"" },
+    { id:"RY-248", title:"N° 248", img:"248.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-249", title:"N° 249", img:"249.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-254", title:"N° 254", img:"254.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-255", title:"N° 255", img:"255.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-256", title:"N° 256", img:"256.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-257", title:"N° 257", img:"257.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-258", title:"N° 258", img:"258.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-278", title:"N° 278", img:"278.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-279", title:"N° 279", img:"279.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-280", title:"N° 280", img:"280.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-281", title:"N° 281", img:"281.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-282", title:"N° 282", img:"282.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-283", title:"N° 283", img:"283.jpg", colors:[], price:0, desc:"" },
   ]},
   { id:"apliques", idx:"03", name:"Kids", blurb:"Apliques termoadhesivos de la línea Kids.", direct:true, products:[
       { id:"RY-250", title:"N° 250", img:"250.png", colors:[
@@ -1684,24 +1714,24 @@ const CATS = [
       { id:"RY-352", title:"N° 352", img:"352.png", colors:[], price:0, desc:"" },
       { id:"RY-353", title:"N° 353", img:"353.png", colors:[], price:0, desc:"" },
       { id:"RY-354", title:"N° 354", img:"354.png", colors:[], price:0, desc:"" },
-      { id:"RY-380", title:"N° 380", img:"380.png", colors:[], price:0, desc:"" },
-      { id:"RY-381", title:"N° 381", img:"381.png", colors:[], price:0, desc:"" },
-      { id:"RY-382", title:"N° 382", img:"382.png", colors:[], price:0, desc:"" },
-      { id:"RY-383", title:"N° 383", img:"383.png", colors:[], price:0, desc:"" },
-      { id:"RY-384", title:"N° 384", img:"384.png", colors:[], price:0, desc:"" },
-      { id:"RY-385", title:"N° 385", img:"385.png", colors:[], price:0, desc:"" },
-      { id:"RY-386", title:"N° 386", img:"386.png", colors:[], price:0, desc:"" },
-      { id:"RY-387", title:"N° 387", img:"387.png", colors:[], price:0, desc:"" },
-      { id:"RY-388", title:"N° 388", img:"388.png", colors:[], price:0, desc:"" },
-      { id:"RY-389", title:"N° 389", img:"389.png", colors:[], price:0, desc:"" },
-      { id:"RY-390", title:"N° 390", img:"390.png", colors:[], price:0, desc:"" },
-      { id:"RY-391", title:"N° 391", img:"391.png", colors:[], price:0, desc:"" },
-      { id:"RY-392", title:"N° 392", img:"392.png", colors:[], price:0, desc:"" },
-      { id:"RY-393", title:"N° 393", img:"393.png", colors:[], price:0, desc:"" },
-      { id:"RY-394", title:"N° 394", img:"394.png", colors:[], price:0, desc:"" },
-      { id:"RY-395", title:"N° 395", img:"395.png", colors:[], price:0, desc:"" },
-      { id:"RY-396", title:"N° 396", img:"396.png", colors:[], price:0, desc:"" },
-      { id:"RY-397", title:"N° 397", img:"397.png", colors:[], price:0, desc:"" },
+      { id:"RY-380", title:"N° 380", img:"380.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-381", title:"N° 381", img:"381.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-382", title:"N° 382", img:"382.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-383", title:"N° 383", img:"383.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-384", title:"N° 384", img:"384.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-385", title:"N° 385", img:"385.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-386", title:"N° 386", img:"386.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-387", title:"N° 387", img:"387.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-388", title:"N° 388", img:"388.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-389", title:"N° 389", img:"389.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-390", title:"N° 390", img:"390.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-391", title:"N° 391", img:"391.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-392", title:"N° 392", img:"392.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-393", title:"N° 393", img:"393.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-394", title:"N° 394", img:"394.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-395", title:"N° 395", img:"395.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-396", title:"N° 396", img:"396.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-397", title:"N° 397", img:"397.jpg", colors:[], price:0, desc:"" },
       { id:"RY-2553", title:"N° 2553", img:"2553.png", colors:[], price:0, desc:"" },
       { id:"RY-A01", title:"N° A01", img:"a01.png", colors:[], price:0, desc:"" },
       { id:"RY-A02", title:"N° A02", img:"a02.png", colors:[], price:0, desc:"" },
@@ -1773,397 +1803,397 @@ const CATS = [
       { id:"RY-A72", title:"N° A72", img:"a72.png", colors:[], price:0, desc:"" },
   ]},
   { id:"avios", idx:"04", name:"Avíos | Hebillas | Botones | Cadenas", blurb:"Avíos, hebillas y cadenas.", direct:true, products:[
-    { id:"RY-17", title:"N° 17", img:"17silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-18", title:"N° 18", img:"18silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-21", title:"N° 21", img:"21silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-27", title:"N° 27", img:"27silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-33", title:"N° 33", img:"33silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-34", title:"N° 34", img:"34silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-37", title:"N° 37", img:"37silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-39", title:"N° 39", img:"39gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-42", title:"N° 42", img:"42silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-43", title:"N° 43", img:"43silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-44", title:"N° 44", img:"44silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-45", title:"N° 45", img:"45silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-46", title:"N° 46", img:"46silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-47", title:"N° 47", img:"47silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-48", title:"N° 48", img:"48silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-50", title:"N° 50", img:"50silvercadenametalica.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-52", title:"N° 52", img:"52silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-55", title:"N° 55", img:"55silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-59", title:"N° 59", img:"59silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-61", title:"N° 61", img:"61silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-64", title:"N° 64", img:"64silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-66", title:"N° 66", img:"66silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-69", title:"N° 69", img:"69gold.png", imgs:{"Dorado":"69gold.png","Plata":"69silver.png"}, colors:cc("dorado","plata"), price:0, desc:"" },
-    { id:"RY-74", title:"N° 74", img:"74silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-80", title:"N° 80", img:"80silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-81", title:"N° 81", img:"81silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-84", title:"N° 84", img:"84gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-85", title:"N° 85", img:"85silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-87", title:"N° 87 y 153", img:"87y153silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-88", title:"N° 88", img:"88gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-91", title:"N° 91", img:"91silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-92", title:"N° 92", img:"92silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-95", title:"N° 95", img:"95silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-96", title:"N° 96", img:"96silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-97", title:"N° 97", img:"97silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-98", title:"N° 98", img:"98silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-105", title:"N° 105", img:"105botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-106", title:"N° 106", img:"106botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-108", title:"N° 108", img:"108botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-109", title:"N° 109", img:"109botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-110", title:"N° 110", img:"110botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-112", title:"N° 112", img:"112gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-117", title:"N° 117", img:"117gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-118", title:"N° 118", img:"118silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-119", title:"N° 119", img:"119silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-120", title:"N° 120", img:"120silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-124", title:"N° 124", img:"124silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-126", title:"N° 126", img:"126gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-133", title:"N° 133", img:"133silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-134", title:"N° 134", img:"134silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-138", title:"N° 138", img:"138silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-143", title:"N° 143", img:"143silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-144", title:"N° 144", img:"144silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-145", title:"N° 145", img:"145silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-148", title:"N° 148", img:"148silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-149", title:"N° 149", img:"149silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-155", title:"N° 155", img:"155gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-158", title:"N° 158", img:"158silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-161", title:"N° 161", img:"161silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-162", title:"N° 162", img:"162silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-164", title:"N° 164", img:"164silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-165", title:"N° 165", img:"165silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-166", title:"N° 166", img:"166gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-168", title:"N° 168", img:"168gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-169", title:"N° 169", img:"169silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-170", title:"N° 170", img:"170silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-171", title:"N° 171", img:"171silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-172", title:"N° 172", img:"172silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-173", title:"N° 173", img:"173silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-174", title:"N° 174", img:"174silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-179", title:"N° 179", img:"179gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-181", title:"N° 181", img:"181gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-182", title:"N° 182", img:"182silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-183", title:"N° 183", img:"183silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-184", title:"N° 184", img:"184silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-185", title:"N° 185", img:"185silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-186", title:"N° 186", img:"186silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-187", title:"N° 187", img:"187silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-188", title:"N° 188", img:"188silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-189", title:"N° 189", img:"189silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-190", title:"N° 190", img:"190silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-191", title:"N° 191", img:"191silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-194", title:"N° 194", img:"194gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-195", title:"N° 195", img:"195silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-198", title:"N° 198", img:"198gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-199", title:"N° 199", img:"199gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-200", title:"N° 200", img:"200gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-202", title:"N° 202", img:"202gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-203", title:"N° 203", img:"203gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-205", title:"N° 205", img:"205gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-207", title:"N° 207", img:"207gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-208", title:"N° 208", img:"208gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-209", title:"N° 209", img:"209gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-210", title:"N° 210", img:"210gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-211", title:"N° 211", img:"211gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-213", title:"N° 213", img:"213gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-214", title:"N° 214", img:"214silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-216", title:"N° 216", img:"216gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-217", title:"N° 217", img:"217gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-218", title:"N° 218", img:"218silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-219", title:"N° 219", img:"219botonplasticonegro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-220", title:"N° 220", img:"220botonplasticoblanco.png", colors:cc("blanco"), price:0, desc:"" },
-    { id:"RY-221", title:"N° 221", img:"221botonplasticonegro.png", colors:cc("negro"), price:0, desc:"" },
-    { id:"RY-222", title:"N° 222", img:"222botonplasticoblanco.png", colors:cc("blanco"), price:0, desc:"" },
-    { id:"RY-225", title:"N° 225", img:"225botonplasticomarron.png", colors:cc("marron"), price:0, desc:"" },
-    { id:"RY-226", title:"N° 226", img:"226botonplasticomarron.png", colors:cc("marron"), price:0, desc:"" },
-    { id:"RY-227", title:"N° 227", img:"227botonplasticogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-229", title:"N° 229", img:"229botonplasticogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-230", title:"N° 230", img:"230botonplasticogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-231", title:"N° 231", img:"231botonplasticosilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-240", title:"N° 240", img:"240plastico.png", colors:[], price:0, desc:"" },
-    { id:"RY-241", title:"N° 241", img:"241plastico.png", colors:[], price:0, desc:"" },
-    { id:"RY-242", title:"N° 242", img:"242plastico.png", colors:[], price:0, desc:"" },
-    { id:"RY-244", title:"N° 244", img:"244plastico.png", colors:[], price:0, desc:"" },
-    { id:"RY-245", title:"N° 245", img:"245plastico.png", colors:[], price:0, desc:"" },
-    { id:"RY-246", title:"N° 246", img:"246plastico.png", colors:[], price:0, desc:"" },
-    { id:"RY-247", title:"N° 247", img:"247plastico.png", colors:[], price:0, desc:"" },
-    { id:"RY-298", title:"N° 298", img:"298botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-299", title:"N° 299", img:"299botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-300", title:"N° 300", img:"300botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-301", title:"N° 301", img:"301botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-302", title:"N° 302", img:"302botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-347", title:"N° 347", img:"347gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-348", title:"N° 348", img:"348silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-349", title:"N° 349", img:"349silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-350", title:"N° 350", img:"350gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-351", title:"N° 351", img:"351silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-355", title:"N° 355", img:"355gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-357", title:"N° 357", img:"357gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-359", title:"N° 359", img:"359gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-360", title:"N° 360", img:"360silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-361", title:"N° 361", img:"361gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-364", title:"N° 364", img:"364silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-366", title:"N° 366", img:"366gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-367", title:"N° 367", img:"367gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-373", title:"N° 373", img:"373gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-374", title:"N° 374", img:"374gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-376", title:"N° 376", img:"376silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-377", title:"N° 377", img:"377silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-378", title:"N° 378", img:"378silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-386S", title:"N° 386", img:"386silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-398", title:"N° 398", img:"398silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-399", title:"N° 399", img:"399silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-440", title:"N° 440", img:"440gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-441", title:"N° 441", img:"441gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-442", title:"N° 442", img:"442gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-450", title:"N° 450", img:"450gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-451", title:"N° 451", img:"451gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-452", title:"N° 452", img:"452gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-453", title:"N° 453", img:"453gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-455", title:"N° 455", img:"455gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-457", title:"N° 457", img:"457botonmetalicosilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-459", title:"N° 459", img:"459botonmetalicosilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-461", title:"N° 461", img:"461botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-463", title:"N° 463", img:"463botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-464", title:"N° 464", img:"464gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-465", title:"N° 465", img:"465gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-466", title:"N° 466", img:"466gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-469", title:"N° 469", img:"469gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-470", title:"N° 470", img:"470gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-471", title:"N° 471", img:"471gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-472", title:"N° 472", img:"472gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-473", title:"N° 473", img:"473silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-479", title:"N° 479", img:"479gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-480", title:"N° 480", img:"480silver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-481", title:"N° 481", img:"481gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-491", title:"N° 491", img:"491gold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-492", title:"N° 492", img:"492botonmetalicogold.png", colors:cc("dorado"), price:0, desc:"" },
-    { id:"RY-P01", title:"N° P01", img:"p01.png", colors:[], price:0, desc:"" },
-    { id:"RY-P02", title:"N° P02", img:"p02.png", colors:[], price:0, desc:"" },
-    { id:"RY-P03", title:"N° P03", img:"p03.png", colors:[], price:0, desc:"" },
-    { id:"RY-P04", title:"N° P04", img:"p04.png", colors:[], price:0, desc:"" },
-    { id:"RY-P05", title:"N° P05", img:"p05.png", colors:[], price:0, desc:"" },
-    { id:"RY-P06", title:"N° P06", img:"p06.png", colors:[], price:0, desc:"" },
-    { id:"RY-P07", title:"N° P07", img:"p07.png", colors:[], price:0, desc:"" },
-    { id:"RY-P08", title:"N° P08", img:"p08.png", colors:[], price:0, desc:"" },
-    { id:"RY-P09", title:"N° P09", img:"p09.png", colors:[], price:0, desc:"" },
-    { id:"RY-P10", title:"N° P10", img:"p10.png", colors:[], price:0, desc:"" },
-    { id:"RY-P11", title:"N° P11", img:"p11.png", colors:[], price:0, desc:"" },
-    { id:"RY-P12", title:"N° P12", img:"p12.png", colors:[], price:0, desc:"" },
-    { id:"RY-P13", title:"N° P13", img:"p13.png", colors:[], price:0, desc:"" },
-    { id:"RY-P14", title:"N° P14", img:"p14.png", colors:[], price:0, desc:"" },
-    { id:"RY-P15", title:"N° P15", img:"p15.png", colors:[], price:0, desc:"" },
-    { id:"RY-P16", title:"N° P16", img:"p16.png", colors:[], price:0, desc:"" },
-    { id:"RY-P17", title:"N° P17", img:"p17.png", colors:[], price:0, desc:"" },
-    { id:"RY-P18", title:"N° P18", img:"p18.png", colors:[], price:0, desc:"" },
-    { id:"RY-P20", title:"N° P20", img:"p20.png", colors:[], price:0, desc:"" },
-    { id:"RY-P21", title:"N° P21", img:"p21.png", colors:[], price:0, desc:"" },
-    { id:"RY-P22", title:"N° P22", img:"p22.png", colors:[], price:0, desc:"" },
-    { id:"RY-P24", title:"N° P24", img:"p24.png", colors:[], price:0, desc:"" },
-    { id:"RY-P25", title:"N° P25", img:"p25.png", colors:[], price:0, desc:"" },
-    { id:"RY-P26", title:"N° P26", img:"p26.png", colors:[], price:0, desc:"" },
-    { id:"RY-P27", title:"N° P27", img:"p27.png", colors:[], price:0, desc:"" },
-    { id:"RY-P28", title:"N° P28", img:"p28.png", colors:[], price:0, desc:"" },
-    { id:"RY-P29", title:"N° P29", img:"p29.png", colors:[], price:0, desc:"" },
-    { id:"RY-P30", title:"N° P30", img:"p30.png", colors:[], price:0, desc:"" },
-    { id:"RY-P31", title:"N° P31", img:"p31.png", colors:[], price:0, desc:"" },
-    { id:"RY-P32", title:"N° P32", img:"p32.png", colors:[], price:0, desc:"" },
-    { id:"RY-P35", title:"N° P35", img:"p35.png", colors:[], price:0, desc:"" },
-    { id:"RY-P35B", title:"N° P35B", img:"p35b.png", colors:[], price:0, desc:"" },
-    { id:"RY-P37", title:"N° P37", img:"p37.png", colors:[], price:0, desc:"" },
-    { id:"RY-P38", title:"N° P38", img:"p38.png", colors:[], price:0, desc:"" },
-    { id:"RY-P39", title:"N° P39", img:"p39.png", colors:[], price:0, desc:"" },
-    { id:"RY-P40", title:"N° P40", img:"p40.png", colors:[], price:0, desc:"" },
-    { id:"RY-P41", title:"N° P41", img:"p41.png", colors:[], price:0, desc:"" },
-    { id:"RY-P42", title:"N° P42", img:"p42.png", colors:[], price:0, desc:"" },
-    { id:"RY-P43", title:"N° P43", img:"p43.png", colors:[], price:0, desc:"" },
-    { id:"RY-P44", title:"N° P44", img:"p44.png", colors:[], price:0, desc:"" },
-    { id:"RY-P54", title:"N° P54", img:"p54.png", colors:[], price:0, desc:"" },
-    { id:"RY-P55", title:"N° P55", img:"p55.png", colors:[], price:0, desc:"" },
-    { id:"RY-P56", title:"N° P56", img:"p56.png", colors:[], price:0, desc:"" },
-    { id:"RY-P57", title:"N° P57", img:"p57.png", colors:[], price:0, desc:"" },
-    { id:"RY-P58", title:"N° P58", img:"p58.png", colors:[], price:0, desc:"" },
-    { id:"RY-P59", title:"N° P59", img:"p59.png", colors:[], price:0, desc:"" },
-    { id:"RY-P60", title:"N° P60", img:"p60.png", colors:[], price:0, desc:"" },
-    { id:"RY-P61", title:"N° P61", img:"p61.png", colors:[], price:0, desc:"" },
-    { id:"RY-P63", title:"N° P63", img:"p63.png", colors:[], price:0, desc:"" },
-    { id:"RY-P65", title:"N° P65", img:"p65.png", colors:[], price:0, desc:"" },
-    { id:"RY-P66", title:"N° P66", img:"p66.png", colors:[], price:0, desc:"" },
-    { id:"RY-P67", title:"N° P67", img:"p67.png", colors:[], price:0, desc:"" },
-    { id:"RY-P70", title:"N° P70", img:"p70botonjapones.png", colors:[], price:0, desc:"" },
-    { id:"RY-P71", title:"N° P71", img:"p71botonjapones.png", colors:[], price:0, desc:"" },
-    { id:"RY-P72", title:"N° P72", img:"p72.png", colors:[], price:0, desc:"" },
-    { id:"RY-P73", title:"N° P73", img:"p73.png", colors:[], price:0, desc:"" },
-    { id:"RY-P74", title:"N° P74", img:"p74.png", colors:[], price:0, desc:"" },
-    { id:"RY-P75", title:"N° P75", img:"p75.png", colors:[], price:0, desc:"" },
-    { id:"RY-P76", title:"N° P76", img:"p76.png", colors:[], price:0, desc:"" },
-    { id:"RY-P77", title:"N° P77", img:"p77.png", colors:[], price:0, desc:"" },
-    { id:"RY-P78", title:"N° P78", img:"p78.png", colors:[], price:0, desc:"" },
-    { id:"RY-P79", title:"N° P79", img:"p79.png", colors:[], price:0, desc:"" },
-    { id:"RY-P80", title:"N° P80", img:"p80.png", colors:[], price:0, desc:"" },
-    { id:"RY-P81", title:"N° P81", img:"p81.png", colors:[], price:0, desc:"" },
-    { id:"RY-P82", title:"N° P82", img:"p82.png", colors:[], price:0, desc:"" },
-    { id:"RY-P101", title:"N° P101", img:"p101.png", colors:[], price:0, desc:"" },
-    { id:"RY-P102", title:"N° P102", img:"p102.png", colors:[], price:0, desc:"" },
-    { id:"RY-P103", title:"N° P103", img:"p103.png", colors:[], price:0, desc:"" },
-    { id:"RY-P104", title:"N° P104", img:"p104.png", colors:[], price:0, desc:"" },
-    { id:"RY-P105", title:"N° P105", img:"p105.png", colors:[], price:0, desc:"" },
-    { id:"RY-P106", title:"N° P106", img:"p106.png", colors:[], price:0, desc:"" },
-    { id:"RY-P124", title:"N° P124", img:"p124.png", colors:[], price:0, desc:"" },
-    { id:"RY-P125", title:"N° P125", img:"p125.png", colors:[], price:0, desc:"" },
-    { id:"RY-R01", title:"N° R01", img:"R01.png", colors:[], price:0, desc:"" },
-    { id:"RY-R02", title:"N° R02", img:"r02.png", colors:[], price:0, desc:"" },
-    { id:"RY-R03", title:"N° R03", img:"r03.png", colors:[], price:0, desc:"" },
-    { id:"RY-R04", title:"N° R04", img:"r04.png", colors:[], price:0, desc:"" },
-    { id:"RY-R05", title:"N° R05", img:"r05.png", colors:[], price:0, desc:"" },
-    { id:"RY-R06", title:"N° R06", img:"r06.png", colors:[], price:0, desc:"" },
-    { id:"RY-R07", title:"N° R07", img:"r07.png", colors:[], price:0, desc:"" },
-    { id:"RY-R08", title:"N° R08", img:"r08.png", colors:[], price:0, desc:"" },
-    { id:"RY-R09", title:"N° R09", img:"r09.png", colors:[], price:0, desc:"" },
-    { id:"RY-R10", title:"N° R10", img:"r10.png", colors:[], price:0, desc:"" },
-    { id:"RY-R11", title:"N° R11", img:"r11.png", colors:[], price:0, desc:"" },
-    { id:"RY-R12", title:"N° R12", img:"r12.png", colors:[], price:0, desc:"" },
-    { id:"RY-R13", title:"N° R13", img:"r13.png", colors:[], price:0, desc:"" },
-    { id:"RY-R14", title:"N° R14", img:"r14.png", colors:[], price:0, desc:"" },
-    { id:"RY-R15", title:"N° R15", img:"r15.png", colors:[], price:0, desc:"" },
-    { id:"RY-R16", title:"N° R16", img:"r16.png", colors:[], price:0, desc:"" },
-    { id:"RY-R17", title:"N° R17", img:"r17.png", colors:[], price:0, desc:"" },
-    { id:"RY-R18", title:"N° R18", img:"r18.png", colors:[], price:0, desc:"" },
-    { id:"RY-R19", title:"N° R19", img:"r19.png", colors:[], price:0, desc:"" },
-    { id:"RY-R20", title:"N° R20", img:"r20.png", colors:[], price:0, desc:"" },
-    { id:"RY-R21", title:"N° R21", img:"r21.png", colors:[], price:0, desc:"" },
-    { id:"RY-R22", title:"N° R22", img:"r22.png", colors:[], price:0, desc:"" },
-    { id:"RY-R23", title:"N° R23", img:"r23.png", colors:[], price:0, desc:"" },
-    { id:"RY-R24", title:"N° R24", img:"r24.png", colors:[], price:0, desc:"" },
-    { id:"RY-R25", title:"N° R25", img:"r25.png", colors:[], price:0, desc:"" },
-    { id:"RY-R27", title:"N° R27", img:"r27.png", colors:[], price:0, desc:"" },
-    { id:"RY-R28", title:"N° R28", img:"r28.png", colors:[], price:0, desc:"" },
-    { id:"RY-R36", title:"N° R36", img:"r36.png", colors:[], price:0, desc:"" },
-    { id:"RY-R45", title:"N° R45", img:"r45.png", colors:[], price:0, desc:"" },
-    { id:"RY-R46", title:"N° R46", img:"r46.png", colors:[], price:0, desc:"" },
-    { id:"RY-R54", title:"N° R54", img:"r54.png", colors:[], price:0, desc:"" },
-    { id:"RY-R55", title:"N° R55", img:"r55.png", colors:[], price:0, desc:"" },
-    { id:"RY-R56", title:"N° R56", img:"r56.png", colors:[], price:0, desc:"" },
-    { id:"RY-R57", title:"N° R57", img:"r57.png", colors:[], price:0, desc:"" },
-    { id:"RY-R58", title:"N° R58", img:"r58.png", colors:[], price:0, desc:"" },
-    { id:"RY-R59", title:"N° R59", img:"r59.png", colors:[], price:0, desc:"" },
-    { id:"RY-R60", title:"N° R60", img:"r60.png", colors:[], price:0, desc:"" },
-    { id:"RY-R61", title:"N° R61", img:"r61.png", colors:[], price:0, desc:"" },
-    { id:"RY-R62", title:"N° R62", img:"r62.png", colors:[], price:0, desc:"" },
-    { id:"RY-R63", title:"N° R63", img:"r63.png", colors:[], price:0, desc:"" },
-    { id:"RY-R64", title:"N° R64", img:"r64.png", colors:[], price:0, desc:"" },
-    { id:"RY-R65", title:"N° R65", img:"r65.png", colors:[], price:0, desc:"" },
-    { id:"RY-P99", title:"N° P99", img:"p99.png", colors:[], price:0, desc:"" },
-    { id:"RY-P111", title:"N° P111", img:"p111.png", colors:[], price:0, desc:"" },
-    { id:"RY-P112", title:"N° P112", img:"p112.png", colors:[], price:0, desc:"" },
-    { id:"RY-P123", title:"N° P123", img:"p123.png", colors:[], price:0, desc:"" },
-    { id:"RY-P126", title:"N° P126", img:"p126.png", colors:[], price:0, desc:"" },
-    { id:"RY-P127", title:"N° P127", img:"p127.png", colors:[], price:0, desc:"" },
-    { id:"RY-P128", title:"N° P128", img:"p128.png", colors:[], price:0, desc:"" },
-    { id:"RY-P131", title:"N° P131", img:"p131.png", colors:[], price:0, desc:"" },
-    { id:"RY-P132", title:"N° P132", img:"p132.png", colors:[], price:0, desc:"" },
-    { id:"RY-P135", title:"N° P135", img:"p135.png", colors:[], price:0, desc:"" },
-    { id:"RY-P136", title:"N° P136", img:"p136.png", colors:[], price:0, desc:"" },
-    { id:"RY-P137", title:"N° P137", img:"p137.png", colors:[], price:0, desc:"" },
-    { id:"RY-P138", title:"N° P138", img:"p138.png", colors:[], price:0, desc:"" },
-    { id:"RY-P139", title:"N° P139", img:"p139.png", colors:[], price:0, desc:"" },
-    { id:"RY-P140", title:"N° P140", img:"p140.png", colors:[], price:0, desc:"" },
-    { id:"RY-P141", title:"N° P141", img:"p141.png", colors:[], price:0, desc:"" },
-    { id:"RY-P142", title:"N° P142", img:"p142.png", colors:[], price:0, desc:"" },
-    { id:"RY-P146", title:"N° P146", img:"p146.png", colors:[], price:0, desc:"" },
+    { id:"RY-17", title:"N° 17", img:"17silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-18", title:"N° 18", img:"18silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-21", title:"N° 21", img:"21silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-27", title:"N° 27", img:"27silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-33", title:"N° 33", img:"33silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-34", title:"N° 34", img:"34silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-37", title:"N° 37", img:"37silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-39", title:"N° 39", img:"39gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-42", title:"N° 42", img:"42silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-43", title:"N° 43", img:"43silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-44", title:"N° 44", img:"44silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-45", title:"N° 45", img:"45silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-46", title:"N° 46", img:"46silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-47", title:"N° 47", img:"47silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-48", title:"N° 48", img:"48silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-50", title:"N° 50", img:"50silvercadenametalica.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-52", title:"N° 52", img:"52silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-55", title:"N° 55", img:"55silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-59", title:"N° 59", img:"59silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-61", title:"N° 61", img:"61silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-64", title:"N° 64", img:"64silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-66", title:"N° 66", img:"66silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-69", title:"N° 69", img:"69gold.jpg", imgs:{"Dorado":"69gold.jpg","Plata":"69silver.jpg"}, colors:cc("dorado","plata"), price:0, desc:"" },
+    { id:"RY-74", title:"N° 74", img:"74silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-80", title:"N° 80", img:"80silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-81", title:"N° 81", img:"81silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-84", title:"N° 84", img:"84gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-85", title:"N° 85", img:"85silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-87", title:"N° 87 y 153", img:"87y153silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-88", title:"N° 88", img:"88gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-91", title:"N° 91", img:"91silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-92", title:"N° 92", img:"92silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-95", title:"N° 95", img:"95silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-96", title:"N° 96", img:"96silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-97", title:"N° 97", img:"97silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-98", title:"N° 98", img:"98silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-105", title:"N° 105", img:"105botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-106", title:"N° 106", img:"106botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-108", title:"N° 108", img:"108botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-109", title:"N° 109", img:"109botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-110", title:"N° 110", img:"110botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-112", title:"N° 112", img:"112gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-117", title:"N° 117", img:"117gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-118", title:"N° 118", img:"118silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-119", title:"N° 119", img:"119silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-120", title:"N° 120", img:"120silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-124", title:"N° 124", img:"124silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-126", title:"N° 126", img:"126gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-133", title:"N° 133", img:"133silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-134", title:"N° 134", img:"134silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-138", title:"N° 138", img:"138silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-143", title:"N° 143", img:"143silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-144", title:"N° 144", img:"144silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-145", title:"N° 145", img:"145silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-148", title:"N° 148", img:"148silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-149", title:"N° 149", img:"149silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-155", title:"N° 155", img:"155gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-158", title:"N° 158", img:"158silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-161", title:"N° 161", img:"161silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-162", title:"N° 162", img:"162silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-164", title:"N° 164", img:"164silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-165", title:"N° 165", img:"165silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-166", title:"N° 166", img:"166gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-168", title:"N° 168", img:"168gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-169", title:"N° 169", img:"169silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-170", title:"N° 170", img:"170silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-171", title:"N° 171", img:"171silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-172", title:"N° 172", img:"172silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-173", title:"N° 173", img:"173silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-174", title:"N° 174", img:"174silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-179", title:"N° 179", img:"179gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-181", title:"N° 181", img:"181gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-182", title:"N° 182", img:"182silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-183", title:"N° 183", img:"183silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-184", title:"N° 184", img:"184silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-185", title:"N° 185", img:"185silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-186", title:"N° 186", img:"186silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-187", title:"N° 187", img:"187silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-188", title:"N° 188", img:"188silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-189", title:"N° 189", img:"189silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-190", title:"N° 190", img:"190silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-191", title:"N° 191", img:"191silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-194", title:"N° 194", img:"194gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-195", title:"N° 195", img:"195silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-198", title:"N° 198", img:"198gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-199", title:"N° 199", img:"199gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-200", title:"N° 200", img:"200gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-202", title:"N° 202", img:"202gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-203", title:"N° 203", img:"203gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-205", title:"N° 205", img:"205gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-207", title:"N° 207", img:"207gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-208", title:"N° 208", img:"208gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-209", title:"N° 209", img:"209gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-210", title:"N° 210", img:"210gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-211", title:"N° 211", img:"211gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-213", title:"N° 213", img:"213gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-214", title:"N° 214", img:"214silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-216", title:"N° 216", img:"216gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-217", title:"N° 217", img:"217gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-218", title:"N° 218", img:"218silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-219", title:"N° 219", img:"219botonplasticonegro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-220", title:"N° 220", img:"220botonplasticoblanco.jpg", colors:cc("blanco"), price:0, desc:"" },
+    { id:"RY-221", title:"N° 221", img:"221botonplasticonegro.jpg", colors:cc("negro"), price:0, desc:"" },
+    { id:"RY-222", title:"N° 222", img:"222botonplasticoblanco.jpg", colors:cc("blanco"), price:0, desc:"" },
+    { id:"RY-225", title:"N° 225", img:"225botonplasticomarron.jpg", colors:cc("marron"), price:0, desc:"" },
+    { id:"RY-226", title:"N° 226", img:"226botonplasticomarron.jpg", colors:cc("marron"), price:0, desc:"" },
+    { id:"RY-227", title:"N° 227", img:"227botonplasticogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-229", title:"N° 229", img:"229botonplasticogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-230", title:"N° 230", img:"230botonplasticogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-231", title:"N° 231", img:"231botonplasticosilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-240", title:"N° 240", img:"240plastico.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-241", title:"N° 241", img:"241plastico.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-242", title:"N° 242", img:"242plastico.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-244", title:"N° 244", img:"244plastico.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-245", title:"N° 245", img:"245plastico.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-246", title:"N° 246", img:"246plastico.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-247", title:"N° 247", img:"247plastico.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-298", title:"N° 298", img:"298botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-299", title:"N° 299", img:"299botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-300", title:"N° 300", img:"300botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-301", title:"N° 301", img:"301botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-302", title:"N° 302", img:"302botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-347", title:"N° 347", img:"347gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-348", title:"N° 348", img:"348silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-349", title:"N° 349", img:"349silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-350", title:"N° 350", img:"350gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-351", title:"N° 351", img:"351silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-355", title:"N° 355", img:"355gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-357", title:"N° 357", img:"357gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-359", title:"N° 359", img:"359gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-360", title:"N° 360", img:"360silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-361", title:"N° 361", img:"361gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-364", title:"N° 364", img:"364silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-366", title:"N° 366", img:"366gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-367", title:"N° 367", img:"367gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-373", title:"N° 373", img:"373gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-374", title:"N° 374", img:"374gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-376", title:"N° 376", img:"376silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-377", title:"N° 377", img:"377silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-378", title:"N° 378", img:"378silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-386S", title:"N° 386", img:"386silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-398", title:"N° 398", img:"398silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-399", title:"N° 399", img:"399silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-440", title:"N° 440", img:"440gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-441", title:"N° 441", img:"441gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-442", title:"N° 442", img:"442gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-450", title:"N° 450", img:"450gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-451", title:"N° 451", img:"451gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-452", title:"N° 452", img:"452gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-453", title:"N° 453", img:"453gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-455", title:"N° 455", img:"455gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-457", title:"N° 457", img:"457botonmetalicosilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-459", title:"N° 459", img:"459botonmetalicosilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-461", title:"N° 461", img:"461botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-463", title:"N° 463", img:"463botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-464", title:"N° 464", img:"464gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-465", title:"N° 465", img:"465gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-466", title:"N° 466", img:"466gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-469", title:"N° 469", img:"469gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-470", title:"N° 470", img:"470gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-471", title:"N° 471", img:"471gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-472", title:"N° 472", img:"472gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-473", title:"N° 473", img:"473silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-479", title:"N° 479", img:"479gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-480", title:"N° 480", img:"480silver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-481", title:"N° 481", img:"481gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-491", title:"N° 491", img:"491gold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-492", title:"N° 492", img:"492botonmetalicogold.jpg", colors:cc("dorado"), price:0, desc:"" },
+    { id:"RY-P01", title:"N° P01", img:"p01.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P02", title:"N° P02", img:"p02.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P03", title:"N° P03", img:"p03.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P04", title:"N° P04", img:"p04.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P05", title:"N° P05", img:"p05.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P06", title:"N° P06", img:"p06.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P07", title:"N° P07", img:"p07.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P08", title:"N° P08", img:"p08.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P09", title:"N° P09", img:"p09.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P10", title:"N° P10", img:"p10.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P11", title:"N° P11", img:"p11.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P12", title:"N° P12", img:"p12.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P13", title:"N° P13", img:"p13.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P14", title:"N° P14", img:"p14.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P15", title:"N° P15", img:"p15.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P16", title:"N° P16", img:"p16.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P17", title:"N° P17", img:"p17.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P18", title:"N° P18", img:"p18.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P20", title:"N° P20", img:"p20.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P21", title:"N° P21", img:"p21.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P22", title:"N° P22", img:"p22.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P24", title:"N° P24", img:"p24.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P25", title:"N° P25", img:"p25.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P26", title:"N° P26", img:"p26.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P27", title:"N° P27", img:"p27.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P28", title:"N° P28", img:"p28.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P29", title:"N° P29", img:"p29.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P30", title:"N° P30", img:"p30.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P31", title:"N° P31", img:"p31.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P32", title:"N° P32", img:"p32.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P35", title:"N° P35", img:"p35.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P35B", title:"N° P35B", img:"p35b.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P37", title:"N° P37", img:"p37.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P38", title:"N° P38", img:"p38.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P39", title:"N° P39", img:"p39.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P40", title:"N° P40", img:"p40.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P41", title:"N° P41", img:"p41.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P42", title:"N° P42", img:"p42.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P43", title:"N° P43", img:"p43.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P44", title:"N° P44", img:"p44.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P54", title:"N° P54", img:"p54.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P55", title:"N° P55", img:"p55.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P56", title:"N° P56", img:"p56.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P57", title:"N° P57", img:"p57.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P58", title:"N° P58", img:"p58.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P59", title:"N° P59", img:"p59.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P60", title:"N° P60", img:"p60.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P61", title:"N° P61", img:"p61.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P63", title:"N° P63", img:"p63.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P65", title:"N° P65", img:"p65.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P66", title:"N° P66", img:"p66.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P67", title:"N° P67", img:"p67.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P70", title:"N° P70", img:"p70botonjapones.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P71", title:"N° P71", img:"p71botonjapones.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P72", title:"N° P72", img:"p72.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P73", title:"N° P73", img:"p73.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P74", title:"N° P74", img:"p74.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P75", title:"N° P75", img:"p75.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P76", title:"N° P76", img:"p76.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P77", title:"N° P77", img:"p77.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P78", title:"N° P78", img:"p78.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P79", title:"N° P79", img:"p79.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P80", title:"N° P80", img:"p80.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P81", title:"N° P81", img:"p81.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P82", title:"N° P82", img:"p82.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P101", title:"N° P101", img:"p101.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P102", title:"N° P102", img:"p102.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P103", title:"N° P103", img:"p103.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P104", title:"N° P104", img:"p104.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P105", title:"N° P105", img:"p105.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P106", title:"N° P106", img:"p106.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P124", title:"N° P124", img:"p124.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P125", title:"N° P125", img:"p125.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R01", title:"N° R01", img:"R01.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R02", title:"N° R02", img:"r02.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R03", title:"N° R03", img:"r03.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R04", title:"N° R04", img:"r04.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R05", title:"N° R05", img:"r05.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R06", title:"N° R06", img:"r06.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R07", title:"N° R07", img:"r07.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R08", title:"N° R08", img:"r08.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R09", title:"N° R09", img:"r09.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R10", title:"N° R10", img:"r10.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R11", title:"N° R11", img:"r11.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R12", title:"N° R12", img:"r12.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R13", title:"N° R13", img:"r13.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R14", title:"N° R14", img:"r14.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R15", title:"N° R15", img:"r15.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R16", title:"N° R16", img:"r16.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R17", title:"N° R17", img:"r17.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R18", title:"N° R18", img:"r18.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R19", title:"N° R19", img:"r19.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R20", title:"N° R20", img:"r20.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R21", title:"N° R21", img:"r21.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R22", title:"N° R22", img:"r22.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R23", title:"N° R23", img:"r23.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R24", title:"N° R24", img:"r24.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R25", title:"N° R25", img:"r25.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R27", title:"N° R27", img:"r27.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R28", title:"N° R28", img:"r28.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R36", title:"N° R36", img:"r36.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R45", title:"N° R45", img:"r45.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R46", title:"N° R46", img:"r46.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R54", title:"N° R54", img:"r54.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R55", title:"N° R55", img:"r55.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R56", title:"N° R56", img:"r56.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R57", title:"N° R57", img:"r57.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R58", title:"N° R58", img:"r58.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R59", title:"N° R59", img:"r59.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R60", title:"N° R60", img:"r60.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R61", title:"N° R61", img:"r61.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R62", title:"N° R62", img:"r62.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R63", title:"N° R63", img:"r63.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R64", title:"N° R64", img:"r64.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-R65", title:"N° R65", img:"r65.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P99", title:"N° P99", img:"p99.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P111", title:"N° P111", img:"p111.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P112", title:"N° P112", img:"p112.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P123", title:"N° P123", img:"p123.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P126", title:"N° P126", img:"p126.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P127", title:"N° P127", img:"p127.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P128", title:"N° P128", img:"p128.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P131", title:"N° P131", img:"p131.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P132", title:"N° P132", img:"p132.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P135", title:"N° P135", img:"p135.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P136", title:"N° P136", img:"p136.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P137", title:"N° P137", img:"p137.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P138", title:"N° P138", img:"p138.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P139", title:"N° P139", img:"p139.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P140", title:"N° P140", img:"p140.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P141", title:"N° P141", img:"p141.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P142", title:"N° P142", img:"p142.jpg", colors:[], price:0, desc:"" },
+    { id:"RY-P146", title:"N° P146", img:"p146.jpg", colors:[], price:0, desc:"" },
     ]},
   { id:"canutillos", idx:"05", name:"Canutillos | Remaches | Ojalillos", blurb:"Canutillos, remaches y ojalillos.", direct:true, products:[
-    { id:"RY-236", title:"N° 236", img:"236ojalillosilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-237", title:"N° 237", img:"237ojalillosilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-238", title:"N° 238", img:"238ojalillosilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-315", title:"N° 315", img:"315remachesilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-316", title:"N° 316", img:"316remachesilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-317", title:"N° 317", img:"317remachesilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-318", title:"N° 318", img:"318remahesilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-319", title:"N° 319", img:"319remachesilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-320", title:"N° 320", img:"320remachesilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-321", title:"N° 321", img:"321canutillosilver.png", colors:cc("plata"), price:0, desc:"" },
-    { id:"RY-403", title:"N° 403", img:"403marmolcolor1d5.png", colors:cc("beige"), price:0, desc:"" },
-    { id:"RY-406", title:"N° 406", img:"406color4verdeesmeralda.png", colors:cc("verde"), price:0, desc:"" },
-    { id:"RY-408", title:"N° 408", img:"408MARMOLBEIGE.png", colors:cc("beige"), price:0, desc:"" },
-    { id:"RY-409", title:"N° 409", img:"409cafeprofundocolor2d5.png", colors:cc("marron"), price:0, desc:"" },
-    { id:"RY-410", title:"N° 410", img:"410madera.png", colors:cc("bronce"), price:0, desc:"" },
-    { id:"RY-413", title:"N° 413", img:"413marmolbeige.png", colors:cc("beige"), price:0, desc:"" },
-    { id:"RY-415", title:"N° 415", img:"415maderacolor3d3.png", colors:cc("bronce"), price:0, desc:"" },
+    { id:"RY-236", title:"N° 236", img:"236ojalillosilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-237", title:"N° 237", img:"237ojalillosilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-238", title:"N° 238", img:"238ojalillosilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-315", title:"N° 315", img:"315remachesilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-316", title:"N° 316", img:"316remachesilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-317", title:"N° 317", img:"317remachesilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-318", title:"N° 318", img:"318remahesilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-319", title:"N° 319", img:"319remachesilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-320", title:"N° 320", img:"320remachesilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-321", title:"N° 321", img:"321canutillosilver.jpg", colors:cc("plata"), price:0, desc:"" },
+    { id:"RY-403", title:"N° 403", img:"403marmolcolor1d5.jpg", colors:cc("beige"), price:0, desc:"" },
+    { id:"RY-406", title:"N° 406", img:"406color4verdeesmeralda.jpg", colors:cc("verde"), price:0, desc:"" },
+    { id:"RY-408", title:"N° 408", img:"408MARMOLBEIGE.jpg", colors:cc("beige"), price:0, desc:"" },
+    { id:"RY-409", title:"N° 409", img:"409cafeprofundocolor2d5.jpg", colors:cc("marron"), price:0, desc:"" },
+    { id:"RY-410", title:"N° 410", img:"410madera.jpg", colors:cc("bronce"), price:0, desc:"" },
+    { id:"RY-413", title:"N° 413", img:"413marmolbeige.jpg", colors:cc("beige"), price:0, desc:"" },
+    { id:"RY-415", title:"N° 415", img:"415maderacolor3d3.jpg", colors:cc("bronce"), price:0, desc:"" },
   ]},
   { id:"cordones", idx:"06", name:"CORDONES | ELÁSTICOS | CIERRES", blurb:"Cordones y elásticos.", subs:[
     { id:"co-cordones", name:"Cordones", products:[
-      { id:"RY-284", title:"N° 284", img:"284.png", colors:cc("crudo"), price:0, desc:"" },
-      { id:"RY-285", title:"N° 285", img:"285.png", colors:cc("crudo"), price:0, desc:"" },
-      { id:"RY-286", title:"N° 286", img:"286.png", colors:cc("crudo"), price:0, desc:"" },
-      { id:"RY-287", title:"N° 287", img:"287beige.png", imgs:{"Beige":"287beige.png","Negro":"287negro.png"}, colors:cc("beige","negro"), price:0, desc:"" },
-      { id:"RY-297", title:"N° 297", img:"297.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-322A", title:"N° 322A", img:"322Ablanco.png", colors:cc("blanco"), price:0, desc:"" },
-      { id:"RY-322B", title:"N° 322B", img:"322Bnegro.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-323A", title:"N° 323A", img:"323Anegro.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-323B", title:"N° 323B", img:"323Bmarron.png", colors:cc("marron"), price:0, desc:"" },
-      { id:"RY-324A", title:"N° 324A", img:"324Anegro.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-324B", title:"N° 324B", img:"324Bblanco.png", colors:cc("blanco"), price:0, desc:"" },
-      { id:"RY-E41", title:"N° E41", img:"e41.png", colors:[], price:0, desc:"" },
+      { id:"RY-284", title:"N° 284", img:"284.jpg", colors:cc("crudo"), price:0, desc:"" },
+      { id:"RY-285", title:"N° 285", img:"285.jpg", colors:cc("crudo"), price:0, desc:"" },
+      { id:"RY-286", title:"N° 286", img:"286.jpg", colors:cc("crudo"), price:0, desc:"" },
+      { id:"RY-287", title:"N° 287", img:"287beige.jpg", imgs:{"Beige":"287beige.jpg","Negro":"287negro.jpg"}, colors:cc("beige","negro"), price:0, desc:"" },
+      { id:"RY-297", title:"N° 297", img:"297.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-322A", title:"N° 322A", img:"322Ablanco.jpg", colors:cc("blanco"), price:0, desc:"" },
+      { id:"RY-322B", title:"N° 322B", img:"322Bnegro.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-323A", title:"N° 323A", img:"323Anegro.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-323B", title:"N° 323B", img:"323Bmarron.jpg", colors:cc("marron"), price:0, desc:"" },
+      { id:"RY-324A", title:"N° 324A", img:"324Anegro.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-324B", title:"N° 324B", img:"324Bblanco.jpg", colors:cc("blanco"), price:0, desc:"" },
+      { id:"RY-E41", title:"N° E41", img:"e41.jpg", colors:[], price:0, desc:"" },
     ]},
     { id:"co-elasticos", name:"Elásticos", products:[
-      { id:"RY-293", title:"N° 293", img:"293.png", colors:cc("crudo"), price:0, desc:"" },
-      { id:"RY-294", title:"N° 294", img:"294.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-295", title:"N° 295", img:"295.png", colors:cc("crudo"), price:0, desc:"" },
-      { id:"RY-296", title:"N° 296", img:"296.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-E26", title:"N° E26", img:"e26.png", colors:[], price:0, desc:"" },
-      { id:"RY-E27", title:"N° E27", img:"e27.png", colors:[], price:0, desc:"" },
-      { id:"RY-E29", title:"N° E29", img:"e29.png", colors:[], price:0, desc:"" },
-      { id:"RY-E30", title:"N° E30", img:"e30.png", colors:[], price:0, desc:"" },
-      { id:"RY-E31", title:"N° E31", img:"e31.png", colors:[], price:0, desc:"" },
-      { id:"RY-E32", title:"N° E32", img:"e32.png", colors:[], price:0, desc:"" },
-      { id:"RY-E36", title:"N° E36", img:"e36.png", colors:[], price:0, desc:"" },
-      { id:"RY-E37", title:"N° E37", img:"e37.png", colors:[], price:0, desc:"" },
-      { id:"RY-E38", title:"N° E38", img:"e38.png", colors:[], price:0, desc:"" },
-      { id:"RY-E39", title:"N° E39", img:"e39.png", colors:[], price:0, desc:"" },
-      { id:"RY-E40", title:"N° E40", img:"e40.png", colors:[], price:0, desc:"" },
-      { id:"RY-E50", title:"N° E50", img:"e50.png", colors:[], price:0, desc:"" },
-      { id:"RY-E51", title:"N° E51", img:"e51.png", colors:[], price:0, desc:"" },
-      { id:"RY-E53", title:"N° E53", img:"e53.png", colors:[], price:0, desc:"" },
-      { id:"RY-E04", title:"N° E04", img:"e04.png", colors:[], price:0, desc:"" },
-      { id:"RY-E05", title:"N° E05", img:"e05.png", colors:[], price:0, desc:"" },
-      { id:"RY-E07", title:"N° E07", img:"e07.png", colors:[], price:0, desc:"" },
-      { id:"RY-E08", title:"N° E08", img:"e08.png", colors:[], price:0, desc:"" },
-      { id:"RY-E09", title:"N° E09", img:"e09.png", colors:[], price:0, desc:"" },
+      { id:"RY-293", title:"N° 293", img:"293.jpg", colors:cc("crudo"), price:0, desc:"" },
+      { id:"RY-294", title:"N° 294", img:"294.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-295", title:"N° 295", img:"295.jpg", colors:cc("crudo"), price:0, desc:"" },
+      { id:"RY-296", title:"N° 296", img:"296.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-E26", title:"N° E26", img:"e26.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E27", title:"N° E27", img:"e27.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E29", title:"N° E29", img:"e29.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E30", title:"N° E30", img:"e30.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E31", title:"N° E31", img:"e31.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E32", title:"N° E32", img:"e32.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E36", title:"N° E36", img:"e36.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E37", title:"N° E37", img:"e37.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E38", title:"N° E38", img:"e38.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E39", title:"N° E39", img:"e39.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E40", title:"N° E40", img:"e40.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E50", title:"N° E50", img:"e50.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E51", title:"N° E51", img:"e51.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E53", title:"N° E53", img:"e53.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E04", title:"N° E04", img:"e04.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E05", title:"N° E05", img:"e05.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E07", title:"N° E07", img:"e07.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E08", title:"N° E08", img:"e08.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-E09", title:"N° E09", img:"e09.jpg", colors:[], price:0, desc:"" },
     ]},
     { id:"co-cierre", name:"Cierre", products:[
-      { id:"RY-E45", title:"N° E45", img:"e45.png", colors:cc("negro"), price:0, desc:"Cierre doble carril importado" },
-      { id:"RY-E46", title:"N° E46", img:"e46.png", colors:cc("negro"), price:0, desc:"Cierre doble carril importado" },
-      { id:"RY-E49", title:"N° E49", img:"e49.png", colors:cc("negro"), price:0, desc:"Cierre doble carril importado" },
+      { id:"RY-E45", title:"N° E45", img:"e45.jpg", colors:cc("negro"), price:0, desc:"Cierre doble carril importado" },
+      { id:"RY-E46", title:"N° E46", img:"e46.jpg", colors:cc("negro"), price:0, desc:"Cierre doble carril importado" },
+      { id:"RY-E49", title:"N° E49", img:"e49.jpg", colors:cc("negro"), price:0, desc:"Cierre doble carril importado" },
     ]},
   ]},
   { id:"flecos", idx:"07", name:"Flecos | Cinta de Ganchos", blurb:"Flecos y cintas de terminación.", subs:[
     { id:"pu-flecos", name:"Flecos", products:[
-      { id:"RY-32", title:"N° 32", img:"32negro.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-330", title:"N° 330", img:"330marron.png", colors:cc("marron"), price:0, desc:"" },
-      { id:"RY-331", title:"N° 331", img:"331beige.png", colors:cc("beige"), price:0, desc:"" },
-      { id:"RY-443", title:"N° 443", img:"443negro.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-444", title:"N° 444", img:"444.png", colors:cc("plata"), price:0, desc:"" },
-      { id:"RY-445", title:"N° 445", img:"445natural.png", colors:cc("natural"), price:0, desc:"" },
-      { id:"RY-446", title:"N° 446", img:"446.png", colors:cc("dorado"), price:0, desc:"" },
-      { id:"RY-447", title:"N° 447", img:"447.png", colors:cc("champagne"), price:0, desc:"" },
-      { id:"RY-448", title:"N° 448", img:"448.png", colors:cc("navy"), price:0, desc:"" },
-      { id:"RY-U03", title:"N° U03", img:"u03.png", colors:[], price:0, desc:"" },
-      { id:"RY-U04", title:"N° U04", img:"u04.png", colors:[], price:0, desc:"" },
-      { id:"RY-U05", title:"N° U05", img:"u05.png", colors:[], price:0, desc:"" },
-      { id:"RY-U06", title:"N° U06", img:"u06.png", colors:[], price:0, desc:"" },
-      { id:"RY-U58", title:"N° U58", img:"u58.png", colors:[], price:0, desc:"" },
+      { id:"RY-32", title:"N° 32", img:"32negro.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-330", title:"N° 330", img:"330marron.jpg", colors:cc("marron"), price:0, desc:"" },
+      { id:"RY-331", title:"N° 331", img:"331beige.jpg", colors:cc("beige"), price:0, desc:"" },
+      { id:"RY-443", title:"N° 443", img:"443negro.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-444", title:"N° 444", img:"444.jpg", colors:cc("plata"), price:0, desc:"" },
+      { id:"RY-445", title:"N° 445", img:"445natural.jpg", colors:cc("natural"), price:0, desc:"" },
+      { id:"RY-446", title:"N° 446", img:"446.jpg", colors:cc("dorado"), price:0, desc:"" },
+      { id:"RY-447", title:"N° 447", img:"447.jpg", colors:cc("champagne"), price:0, desc:"" },
+      { id:"RY-448", title:"N° 448", img:"448.jpg", colors:cc("navy"), price:0, desc:"" },
+      { id:"RY-U03", title:"N° U03", img:"u03.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-U04", title:"N° U04", img:"u04.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-U05", title:"N° U05", img:"u05.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-U06", title:"N° U06", img:"u06.jpg", colors:[], price:0, desc:"" },
+      { id:"RY-U58", title:"N° U58", img:"u58.jpg", colors:[], price:0, desc:"" },
     ]},
     { id:"pu-ganchos", name:"Cinta de Ganchos", products:[
-      { id:"RY-326", title:"N° 326", img:"326.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-327", title:"N° 327", img:"327.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-328", title:"N° 328", img:"328.png", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-326", title:"N° 326", img:"326.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-327", title:"N° 327", img:"327.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-328", title:"N° 328", img:"328.jpg", colors:cc("negro"), price:0, desc:"" },
       { id:"RY-371", title:"N° 371", img:"371blanco.png", colors:cc("blanco"), price:0, desc:"" },
-      { id:"RY-372", title:"N° 372", img:"372negro.png", colors:cc("negro"), price:0, desc:"" },
-      { id:"RY-427", title:"N° 427", img:"427cordon.png", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-372", title:"N° 372", img:"372negro.jpg", colors:cc("negro"), price:0, desc:"" },
+      { id:"RY-427", title:"N° 427", img:"427cordon.jpg", colors:cc("negro"), price:0, desc:"" },
     ]},
   ]},
 ];
@@ -2999,6 +3029,7 @@ function snapshot(){
            prod: state.prod?state.prod.id:null };
 }
 function pushHist(){ try{ history.pushState(snapshot(), ""); }catch(e){} }
+function replaceHist(){ try{ history.replaceState(snapshot(), ""); }catch(e){} }
 function applyHist(s){
   if(!s || !s.view){ state.view="home"; state.cat=null; state.sub=null; state.prod=null; }
   else {
@@ -3077,11 +3108,11 @@ function render(){
 }
 
 const CAT_SPEECH = {
-  puntillas:"Bordados y blondas con caída y textura, para una terminación delicada en cada prenda.",
+  puntillas:"Puntillas y encajes con caída y textura, para una terminación delicada.",
   jean:"Apliques pensados para denim: pegado firme y terminación prolija en cada diseño.",
   apliques:"Avíos tiernos y resistentes, ideales para moda infantil de principio a fin.",
   avios:"La base de todo cierre: hebillas, botones y cadenas en variedad de formas y tamaños.",
-  canutillos:"Herrajes chicos con gran impacto, para sumar detalle y una terminación profesional.",
+  canutillos:"Canutillos, remaches y ojalillos para sumar detalle y terminación profesional.",
   cordones:"Todo lo que ajusta y cierra: cordones, elásticos y cierres en distintos anchos.",
   flecos:"Textura y movimiento para tus prendas, con flecos y cintas de ganchos por mayor."
 };
@@ -3143,7 +3174,7 @@ function renderCatShowcase(){
   }).join("");
   return '<section class="wrap cshow"><div class="cshow-grid">'+cardsHTML+'</div></section>';
 }
-function renderCarousel(){
+function renderCarousel(){ setTimeout(initCarouselSwipe, 0);
   var heroImgs = [HERO_IMG_1, HERO_IMG_2, HERO_IMG_3, HERO_IMG_4];
   var heroImgsMob = [HERO_MOB_1, HERO_MOB_2, HERO_MOB_3, HERO_MOB_4];
   var isMob = window.matchMedia("(max-width:640px)").matches;
@@ -3165,6 +3196,36 @@ function renderCarousel(){
     +'<button class="carousel-arrow right" data-action="carousel-next" aria-label="Foto siguiente">' + IC.chevR + '</button>'
     +'<div class="carousel-dots">' + dots + '</div>'
     +'</div></section>';
+}
+function initCarouselSwipe(){
+  var track = document.getElementById("carousel-track"); if(!track || track.dataset.swipeBound) return;
+  track.dataset.swipeBound = "1";
+  var sx = 0, sy = 0, dragging = false, trackW = 0, startPct = 0, horiz = false;
+  track.addEventListener("touchstart", function(e){
+    var t=e.touches[0]; sx=t.clientX; sy=t.clientY; dragging=true; horiz=false;
+    trackW = track.getBoundingClientRect().width || 1;
+    startPct = -(state.slide*100);
+    track.style.transition = "none";
+  }, {passive:true});
+  track.addEventListener("touchmove", function(e){
+    if(!dragging) return;
+    var t=e.touches[0]; var dx=t.clientX-sx, dy=t.clientY-sy;
+    if(!horiz && Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+    if(!horiz) horiz = Math.abs(dx) > Math.abs(dy);
+    if(horiz){
+      e.preventDefault();
+      var pct = (dx / trackW) * 100;
+      track.style.transform = "translateX(" + (startPct + pct) + "%)";
+    }
+  }, {passive:false});
+  track.addEventListener("touchend", function(e){
+    if(!dragging) return; dragging=false;
+    track.style.transition = "";
+    if(!horiz){ return; }
+    var t=e.changedTouches[0]; var dx=t.clientX-sx;
+    if(Math.abs(dx) > trackW*0.18){ slideTo(state.slide + (dx<0?1:-1)); }
+    else { slideTo(state.slide); }
+  }, {passive:true});
 }
 function renderHome(){
   var all=[]; CATS.forEach(function(c){ all=all.concat(catAllProducts(c)); });
@@ -3219,7 +3280,8 @@ function renderProduct(){
       <svg class="chk" viewBox="0 0 24 24" fill="none" stroke="${dark?"#fff":"#141414"}"><path d="M20 6 9 17l-5-5"/></svg>
     </button>`;
   }).join("") : `<div class="swatch" title="Sin color" aria-label="Sin color" style="background:transparent;border:1px solid var(--line2)"></div>`;
-  const buyBlock = `<div class="add-row"><button class="add-btn" data-action="add">Agregar al carrito</button><button class="add-cart-btn" data-action="see-cart" aria-label="Ver carrito"><svg class="ic cart-ic-r" viewBox="0 0 38.14 29.96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M36.14,9.95v18.01H2V9.95h34.14M38.14,7.95H0v22.01h38.14V7.95h0Z"/><path class="stroke" d="M25.63,13.94V4.66c-.2-.32-2.19-3.39-5.99-3.65-2.79-.19-5.5,1.22-7.03,3.64v9.27"/></svg><span class="add-cart-count">${cartCount()}</span></button></div>`;
+  const ownerLocked = !!(AUTH.current() && AUTH.current().is_owner);
+  const buyBlock = `<div class="add-row"><button class="add-btn${ownerLocked?" locked":""}" data-action="add"${ownerLocked?` disabled aria-disabled="true" data-tip="No podés comprar con este usuario"`:``}>Agregar al carrito</button><button class="add-cart-btn" data-action="see-cart" aria-label="Ver carrito"><svg class="ic cart-ic-r" viewBox="0 0 38.14 29.97" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M36.14,9.96v18.01H2V9.96h34.14M36.21,7.96H1.96c-1.08,0-1.96.88-1.96,1.96v17.81c0,1.24,1,2.24,2.24,2.24h33.75c1.19,0,2.16-.97,2.16-2.16V9.89c0-1.07-.86-1.93-1.93-1.93Z"/><path class="stroke" d="M25.63,13.95V4.67c-.2-.32-2.19-3.39-5.99-3.65-2.79-.19-5.5,1.22-7.03,3.64v9.27"/></svg><span class="add-cart-count">${cartCount()}</span></button></div>`;
   return `<div class="prod fade"><div class="wrap">
     <button class="back" data-action="back" aria-label="Volver">${IC.arrowL}</button>
     <div class="prod-grid">
@@ -3301,7 +3363,7 @@ function relatedProducts(cur){
   let pool=[];
   (f.c.products||[]).forEach(p=>pool.push(p));
   (f.c.subs||[]).forEach(s=>(s.products||[]).forEach(p=>pool.push(p)));
-  pool=pool.filter(p=>p.img && p.id!==cur.id);
+  pool=pool.filter(p=>p.img && p.id!==cur.id && !p.nostock);
   return shuffleArr(pool).slice(0,20);
 }
 
@@ -3363,6 +3425,7 @@ function closeSearch(){
 function cartCount(){ return state.cart.reduce((a,i)=>a+i.qty,0); }
 function cartTotal(){ return state.cart.reduce((a,i)=>a+i.qty*i.price,0); }
 function addToCart(){
+  const _u=AUTH.current(); if(_u&&_u.is_owner) return;
   const p=state.prod, color=p.colors[state.sel.ci]||{n:"",h:"transparent"}, qty=state.sel.qty;
   const i = state.cart.findIndex(x=>x.id===p.id && x.color===color.n);
   if(i>=0) state.cart[i].qty += qty;
@@ -3370,7 +3433,7 @@ function addToCart(){
   updateCartUI();
   const cc=$(".add-cart-count"); if(cc) cc.textContent=cartCount();
 }
-function flashAdd(btn){ if(!btn||btn.dataset.f) return; btn.dataset.f="1"; const o=btn.textContent; btn.textContent="✓ Agregado"; btn.classList.add("flash-ok"); setTimeout(()=>{ btn.textContent=o; btn.classList.remove("flash-ok"); delete btn.dataset.f; },1100); }
+function flashAdd(btn){ if(!btn||btn.dataset.f) return; btn.dataset.f="1"; const o=btn.innerHTML; btn.innerHTML='<svg class="ic chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Agregado'; btn.classList.add("flash-ok"); setTimeout(()=>{ btn.innerHTML=o; btn.classList.remove("flash-ok"); delete btn.dataset.f; },1100); }
 function removeItem(key){ state.cart=state.cart.filter(x=>x.key!==key); updateCartUI(); }
 function updateCartUI(){
   const n=cartCount(), badgeTxt = n>999?"999+":n;
@@ -3396,8 +3459,8 @@ function updateCartUI(){
 }
 function openCart(){ $("#overlay").classList.add("on"); $("#drawer").classList.add("on"); }
 function closeCart(){ $("#overlay").classList.remove("on"); $("#drawer").classList.remove("on"); }
-function openContact(){ $("#modal").classList.add("on"); }
-function closeContact(){ $("#modal").classList.remove("on"); }
+function openContact(){ $("#modal").classList.add("on"); document.body.classList.add("sb-open"); }
+function closeContact(){ $("#modal").classList.remove("on"); document.body.classList.remove("sb-open"); }
 
 /* ================= Producto: interacciones sin re-render ================= */
 function pickColor(ci){
@@ -3719,7 +3782,7 @@ document.addEventListener("change", e=>{ if(e.target && (e.target.id==="adm-mes"
 function resetEye(id){ const el=$("#"+id); if(el) el.type="password"; const b=document.querySelector('[data-target="'+id+'"]'); if(b) b.classList.remove("on"); }
 function envioResumen(e){ if(!e) return ""; if(e.tipo==="Barrio Flores, CABA") return "Barrio Flores, CABA · "+(e.direccion||"")+(e.piso?(" · Piso "+e.piso):""); if(e.tipo==="Otro") return [e.empresa?("Empresa: "+e.empresa):"", e.calle, e.piso?("Piso "+e.piso):"", e.localidad, e.provincia, e.cp?("CP "+e.cp):"", e.referencia].filter(Boolean).join(" · "); return "Retiro por depósito"; }
 const authState = { menu:false };
-function initials(u){ const a=(u.nombre||"").trim()[0]||""; const b=(u.apellido||"").trim()[0]||""; return (a+b).toUpperCase()||"?"; }
+function initials(u){ if(u&&u.is_owner) return "D"; const a=(u.nombre||"").trim()[0]||""; const b=(u.apellido||"").trim()[0]||""; return (a+b).toUpperCase()||"?"; }
 function renderSidebar(){
   var el = document.getElementById("sidebar-content"); if(!el) return;
   var u = AUTH.current();
@@ -4115,7 +4178,7 @@ document.addEventListener("click", e=>{
   else if(a==="toggle-sidebar") toggleSidebar();
   else if(a==="close-sidebar") closeSidebar();
   else if(a==="open-cat") openCat(findCat(t.dataset.cat), t.dataset.sub);
-  else if(a==="pick-sub"){ state.sub = findSub(state.cat, t.dataset.sub); render(); pushHist(); }
+  else if(a==="pick-sub"){ state.sub = findSub(state.cat, t.dataset.sub); render(); replaceHist(); }
   else if(a==="open-prod"){ if(state.cat){ const list=(state.sub?state.sub.products:state.cat.products); state.prodFrom="category"; openProd(list.find(p=>p.id===t.dataset.prod)); } else { openProdAny(t.dataset.prod); } }
   else if(a==="open-prod-any"){ openProdAny(t.dataset.prod); }
   else if(a==="back") go(state.prodFrom==="home"?"home":"category");
@@ -4142,7 +4205,7 @@ document.addEventListener("click", e=>{
   else if(a==="pick-color") pickColor(parseInt(t.dataset.ci,10));
   else if(a==="qty-dec") setQty(state.sel.qty-pMin(state.prod));
   else if(a==="qty-inc") setQty(state.sel.qty+pMin(state.prod));
-  else if(a==="add"){ addToCart(); flashAdd(t); }
+  else if(a==="add"){ const _u=AUTH.current(); if(_u&&_u.is_owner) return; addToCart(); flashAdd(t); }
   else if(a==="see-cart") openCart();
   else if(a==="add-again"){ state.added=false; render(); }
   else if(a==="open-register") openRegister();
