@@ -1287,9 +1287,8 @@ body.sb-open{overflow:hidden!important;position:fixed!important;width:100%!impor
 #app .add-cart-btn .ic{width:35px;height:28px}
 #app .checkout{border-radius:10px!important}
 
-/* Carrito flotante (sidebar/pestaña docked al borde): restaurar el semi-pill original, hoy perdía contra el matapuntas y salía cuadrado */
-#app .cart-fab{border-radius:999px 0 0 999px!important}
-@media(min-width:641px){ #app .cart-fab{border-radius:999px!important} }
+/* Carrito flotante (sidebar/pestaña docked al borde): círculo completo, tanto en celu como en compu */
+#app .cart-fab{border-radius:999px!important}
 
 /* Punto 2: sacar el rectángulo del botón "ver carrito" en la ficha y del link de Instagram en contacto; zoom en su lugar, igual que Iniciar sesión */
 #app .add-cart-btn{border:0!important;transition:transform .2s cubic-bezier(.34,1.5,.64,1)!important}
@@ -3096,6 +3095,17 @@ function slideTo(i){
   state.slide = (i%SLIDES+SLIDES)%SLIDES;
   const tr=$("#carousel-track"); if(tr) tr.style.transform = "translateX(-"+(state.slide*100)+"%)";
   document.querySelectorAll(".dot").forEach((d,k)=>d.classList.toggle("on", k===state.slide));
+  startHeroAuto();
+}
+var heroAutoTimer=null;
+function stopHeroAuto(){ if(heroAutoTimer){ clearInterval(heroAutoTimer); heroAutoTimer=null; } }
+function startHeroAuto(){
+  stopHeroAuto();
+  heroAutoTimer = setInterval(function(){
+    var tr = document.getElementById("carousel-track");
+    if(!tr){ stopHeroAuto(); return; }
+    slideTo(state.slide+1);
+  }, 4000);
 }
 
 /* ================= Render principal ================= */
@@ -3177,7 +3187,7 @@ function renderCatShowcase(){
   }).join("");
   return '<section class="wrap cshow"><div class="cshow-grid">'+cardsHTML+'</div></section>';
 }
-function renderCarousel(){ setTimeout(initCarouselSwipe, 0);
+function renderCarousel(){ setTimeout(function(){ initCarouselSwipe(); startHeroAuto(); }, 0);
   var heroImgs = [HERO_IMG_1, HERO_IMG_2, HERO_IMG_3, HERO_IMG_4];
   var heroImgsMob = [HERO_MOB_1, HERO_MOB_2, HERO_MOB_3, HERO_MOB_4];
   var isMob = window.matchMedia("(max-width:640px)").matches;
@@ -3209,6 +3219,7 @@ function initCarouselSwipe(){
     trackW = track.getBoundingClientRect().width || 1;
     startPct = -(state.slide*100);
     track.style.transition = "none";
+    stopHeroAuto();
   }, {passive:true});
   track.addEventListener("touchmove", function(e){
     if(!dragging) return;
