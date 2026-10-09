@@ -1288,7 +1288,7 @@ body.sb-open{overflow:hidden!important;position:fixed!important;width:100%!impor
 #app .checkout{border-radius:10px!important}
 
 /* Carrito flotante (sidebar/pestaña docked al borde): círculo completo, tanto en celu como en compu */
-#app .cart-fab{border-radius:999px!important}
+#app .cart-fab{border-radius:999px!important;border:0!important}
 
 /* Punto 2: sacar el rectángulo del botón "ver carrito" en la ficha y del link de Instagram en contacto; zoom en su lugar, igual que Iniciar sesión */
 #app .add-cart-btn{border:0!important;transition:transform .2s cubic-bezier(.34,1.5,.64,1)!important}
@@ -1313,6 +1313,78 @@ body.sb-open{overflow:hidden!important;position:fixed!important;width:100%!impor
 #app .add-btn.locked[data-tip]::before{content:"";position:absolute;left:50%;bottom:calc(100% + 5px);transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--ink);opacity:0;pointer-events:none;transition:opacity .15s;z-index:5}
 #app .add-btn.locked[data-tip]:hover::after,#app .add-btn.locked[data-tip]:focus-visible::after{opacity:1;transform:translateX(-50%) translateY(0)}
 #app .add-btn.locked[data-tip]:hover::before,#app .add-btn.locked[data-tip]:focus-visible::before{opacity:1}
+
+/* ===== Sobre nosotros ===== */
+.about-page{padding-bottom:70px}
+.reveal{opacity:0;transform:translateY(38px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.reveal-in{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.reveal{transition:none;opacity:1;transform:none}}
+
+.about-hero-txt{max-width:1400px;margin:0 auto;padding:40px 20px 6px}
+@media(min-width:640px){.about-hero-txt{padding:64px 40px 10px}}
+@media(min-width:1024px){.about-hero-txt{padding:84px 56px 14px}}
+.about-big{font-family:'Bodoni Moda',Georgia,serif;font-optical-sizing:auto;font-weight:700;
+  font-size:clamp(34px,8.6vw,94px);line-height:1.02;letter-spacing:-.01em;color:var(--ink);margin:12px 0 0}
+.about-big em{font-style:italic;font-weight:400}
+.about-big-sub{font-size:clamp(15.5px,2vw,19px);line-height:1.65;color:var(--muted);max-width:760px;margin:26px 0 0}
+
+.about-bleed{display:flex;flex-direction:column;margin-top:44px}
+@media(min-width:640px){.about-bleed{flex-direction:row}}
+.about-bleed>div{flex:1;min-width:0;overflow:hidden}
+.about-bleed img{width:100%;height:260px;display:block;object-fit:cover}
+@media(min-width:640px){.about-bleed img{height:440px}}
+@media(min-width:1024px){.about-bleed img{height:640px}}
+.about-caption{text-align:center;font-family:'Bodoni Moda',Georgia,serif;font-style:italic;
+  font-size:clamp(13.5px,1.6vw,16px);color:var(--muted2);margin:16px 20px 0}
+
+.about-feature{display:flex;flex-direction:column}
+@media(min-width:900px){.about-feature{flex-direction:row;min-height:560px}}
+.about-feature.rev{}
+@media(min-width:900px){.about-feature.rev{flex-direction:row-reverse}}
+.about-feature:nth-child(odd){background:var(--bone)}
+.about-feature-img{flex:1 1 50%;min-width:0;overflow:hidden}
+.about-feature-img img{width:100%;height:300px;display:block;object-fit:cover}
+@media(min-width:900px){.about-feature-img img{height:100%;min-height:560px}}
+.about-feature-txt{flex:1 1 50%;display:flex;flex-direction:column;justify-content:center;padding:40px 20px}
+@media(min-width:640px){.about-feature-txt{padding:54px 50px}}
+@media(min-width:1024px){.about-feature-txt{padding:64px 84px}}
+.about-big2{font-family:'Bodoni Moda',Georgia,serif;font-optical-sizing:auto;font-weight:700;
+  font-size:clamp(27px,4.4vw,48px);line-height:1.08;letter-spacing:-.01em;color:var(--ink);margin:12px 0 18px}
+.about-p2{font-size:clamp(14.5px,1.7vw,16.5px);line-height:1.75;color:var(--muted);max-width:480px}
+
+.about-block{margin-top:60px;padding:0 20px;max-width:1120px;margin-left:auto;margin-right:auto}
+@media(min-width:640px){.about-block{padding:0 32px}}
+.about-h2{font-family:'Bodoni Moda',Georgia,serif;font-optical-sizing:auto;font-weight:700;
+  font-size:clamp(28px,5.2vw,46px);margin:6px 0 22px;letter-spacing:-.01em;color:var(--ink)}
+.about-p{font-size:16px;line-height:1.7;color:var(--muted);margin-bottom:4px}
+.about-steps{display:grid;grid-template-columns:1fr;gap:18px;margin-top:26px}
+.about-step{background:var(--bone);box-shadow:var(--sh);padding:26px 22px;display:flex;flex-direction:column;gap:13px}
+.about-step-n{flex-shrink:0;width:36px;height:36px;background:var(--accent-dk);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;
+  font-weight:700;font-size:14px}
+.about-step-txt b{display:block;font-family:'Poppins',sans-serif;font-weight:600;font-size:16.5px;
+  color:var(--ink);margin-bottom:4px}
+.about-step-txt span{display:block;font-size:14.5px;color:var(--muted);line-height:1.6}
+@media(min-width:720px){
+  .about-steps{grid-template-columns:repeat(6,1fr)}
+  .about-step{grid-column:span 2}
+  .about-step:nth-child(4){grid-column:2/span 2}
+  .about-step:nth-child(5){grid-column:4/span 2}
+}
+.about-map-row{display:flex;flex-direction:column;gap:24px;margin-top:26px}
+.about-map-col-text{flex:none}
+.about-map-wrap{overflow:hidden;box-shadow:var(--sh-lg);background:var(--fill)}
+.about-map-wrap iframe{width:100%;height:320px;border:0;display:block;filter:grayscale(.15) contrast(1.02)}
+@media(min-width:900px){
+  .about-map-row{flex-direction:row;align-items:stretch}
+  .about-map-col-text{flex:0 0 320px}
+  .about-map-wrap{flex:1;min-width:0}
+  .about-map-wrap iframe{height:100%;min-height:440px}
+}
+.about-map-note{font-size:13px;color:var(--muted2);margin-top:14px}
+#app .about-step{border-radius:var(--r)!important}
+#app .about-step-n{border-radius:999px!important}
+#app .about-map-wrap{border-radius:var(--r-lg)!important}
 </style>
 </head>
 <body>
@@ -3118,6 +3190,7 @@ function render(){
   else if(state.view==="product"){ view.innerHTML = renderProduct(); initZoom(); initReco(); }
   else if(state.view==="admin"){ view.innerHTML = renderAdminShell(); loadAdmin(); }
   else if(state.view==="catalog") view.innerHTML = renderCatalog();
+  else if(state.view==="about"){ view.innerHTML = renderAbout(); setTimeout(initAboutReveal,0); }
 }
 
 const CAT_SPEECH = {
@@ -3612,6 +3685,92 @@ function renderCatalog(){
   </section>`;
 }
 function openCatalog(){ state.view="catalog"; render(); window.scrollTo({top:0}); pushHist(); }
+function openAbout(){ state.view="about"; render(); window.scrollTo({top:0}); pushHist(); }
+function initAboutReveal(){
+  var els = document.querySelectorAll('.about-page .reveal');
+  if(!els.length) return;
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){ el.classList.add('reveal-in'); }); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){ entry.target.classList.add('reveal-in'); io.unobserve(entry.target); }
+    });
+  }, { threshold:.15, rootMargin:"0px 0px -60px 0px" });
+  els.forEach(function(el){ io.observe(el); });
+}
+const ABOUT_SHOWROOM_IMG = "sn6.jpg";
+const ABOUT_SHOWROOM_IMG_2 = "sn1.jpg";
+const ABOUT_STEPS = [
+  { t:"Explorá el catálogo", d:"Recorré las categorías desde el home o usá el buscador para encontrar directo el artículo que necesitás." },
+  { t:"Elegí color y cantidad", d:"Entrá a la ficha del producto, elegí el color y la cantidad. Vendemos por mayor, respetando el mínimo de cada artículo." },
+  { t:"Sumalo al carrito", d:"Repetí con todos los artículos de tu pedido. Podés revisar o modificar el carrito en cualquier momento antes de confirmar." },
+  { t:"Iniciá sesión o seguí como invitado", d:"Completá tus datos de contacto y elegí cómo vas a recibir el pedido: retiro en el showroom o envío." },
+  { t:"Pagá dentro de las 24 horas", d:"Una vez confirmado el pedido, tenés 24 horas para transferir el pago a la cuenta bancaria que te brindamos en el último paso." }
+];
+const ABOUT_FEATURES = [
+  { img:"sn3.jpg", alt:"Broche y cierre metálico sobre prenda blanca",
+    eyebrow:"Herrajes y broches",
+    t:"El broche justo cambia una prenda entera.",
+    d:"Cierres, ganchos y broches pensados para que se note la terminación, no el esfuerzo. Elegimos cada herraje probándolo sobre la tela, no solo en catálogo." },
+  { img:"sn7.png", alt:"Breteles con cadenas y piedras sobre prenda animal print",
+    eyebrow:"Cadenas y breteles",
+    t:"Cadenas, piedras y breteles: los detalles que cuentan una historia.",
+    d:"Desde breteles finitos con strass hasta cadenas gruesas con carácter. El mismo avío cambia por completo según dónde lo pongas." },
+  { img:"sn4.png", alt:"Tachas metálicas en forma de estrella y pirámide",
+    eyebrow:"Tachas y apliques metálicos",
+    t:"Tachas, estrellas, pirámides: el brillo que distingue tu marca.",
+    d:"Trabajamos varios tamaños y formas del mismo artículo para que puedas combinar texturas dentro de una misma colección." },
+  { img:"sn2.png", alt:"Dijes dorados con forma de estrella de mar",
+    eyebrow:"Dijes y apliques",
+    t:"Dorado, plateado, bronce: vos elegís el metal.",
+    d:"Dijes, apliques y piezas sueltas para sumar un detalle distinto a cada prenda. Importados directo, sin intermediarios de por medio." },
+  { img:"sn5.png", alt:"Aplique de puntilla bordada sobre remera blanca",
+    eyebrow:"Puntillas y encajes",
+    t:"Puntillas y apliques: una textura que se siente antes de verse.",
+    d:"Encajes con caída real, para coser o aplicar, con la terminación prolija que necesita una prenda que vas a vender." }
+];
+function renderAbout(){
+  const steps = ABOUT_STEPS.map(function(s,i){
+    return '<div class="about-step reveal"><span class="about-step-n">'+(i+1)+'</span>'
+      +'<span class="about-step-txt"><b>'+esc(s.t)+'</b><span>'+esc(s.d)+'</span></span></div>';
+  }).join("");
+  const features = ABOUT_FEATURES.map(function(f,i){
+    return '<div class="about-feature'+(i%2?" rev":"")+' reveal">'
+      +'<div class="about-feature-img"><img src="/.netlify/images?url=/'+f.img+'&w=1200&q=78" alt="'+esc(f.alt)+'" loading="lazy" decoding="async"></div>'
+      +'<div class="about-feature-txt"><p class="eyebrow">'+esc(f.eyebrow)+'</p>'
+        +'<h2 class="about-big2">'+esc(f.t)+'</h2>'
+        +'<p class="about-p2">'+esc(f.d)+'</p></div>'
+    +'</div>';
+  }).join("");
+  return '<section class="about-page">'
+    +'<div class="about-hero-txt reveal">'
+      +'<p class="eyebrow">Royal Avíos</p>'
+      +'<h1 class="about-big">No somos una empresa.<br>Somos un equipo.</h1>'
+      +'<p class="about-big-sub">Hace más de 5 años elegimos e importamos nuestros avíos directamente desde China para que tengas, en un solo lugar, variedad, calidad y precio de mayorista. Todo lo que ves en el catálogo lo tenemos también en nuestro showroom, en el barrio de Flores.</p>'
+    +'</div>'
+    +'<div class="about-bleed reveal">'
+      +'<div><img src="/.netlify/images?url=/'+ABOUT_SHOWROOM_IMG+'&w=1400&q=78" alt="Showroom de Royal Avíos en Flores" loading="lazy" decoding="async"></div>'
+      +'<div><img src="/.netlify/images?url=/'+ABOUT_SHOWROOM_IMG_2+'&w=1400&q=78" alt="Vitrinas de avíos en el showroom de Royal Avíos" loading="lazy" decoding="async"></div>'
+    +'</div>'
+    +'<p class="about-caption reveal">Nuestro showroom en Flores, Buenos Aires.</p>'
+    +features
+    +'<div class="about-block reveal">'
+      +'<p class="eyebrow">Cómo comprar</p>'
+      +'<h2 class="about-h2">En 5 pasos</h2>'
+      +'<div class="about-steps">'+steps+'</div>'
+    +'</div>'
+    +'<div class="about-block reveal">'
+      +'<p class="eyebrow">Showroom</p>'
+      +'<h2 class="about-h2">Flores, Buenos Aires</h2>'
+      +'<div class="about-map-row">'
+        +'<div class="about-map-col-text">'
+          +'<p class="about-p">Estamos en plena zona comercial de Flores. Coordinamos la visita por Instagram antes de pasar.</p>'
+          +'<p class="about-map-note">El mapa muestra la zona del showroom, no la dirección exacta del local.</p>'
+        +'</div>'
+        +'<div class="about-map-wrap"><iframe src="https://www.google.com/maps?q=Av.+Rivadavia+y+Nazca,+Flores,+Buenos+Aires&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Zona del showroom en Flores"></iframe></div>'
+      +'</div>'
+    +'</div>'
+  +'</section>';
+}
 /* --- Exportar Excel (CSV con BOM, abre en Excel) --- */
 function catalogExcel(){
   if(!window.XLSX){ alert("No se pudo generar el Excel."); return; }
@@ -3808,6 +3967,7 @@ function renderSidebar(){
   var ICON_PENCIL = '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>';
   var ICON_PANEL = '<rect x="3" y="4" width="18" height="4"/><rect x="3" y="10" width="18" height="10"/><path d="M9 14h6"/>';
   var ICON_PHONE = '<path d="M14 5h1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h1"/><path d="M12 5V4"/><circle cx="12" cy="18" r=".6" fill="currentColor" stroke="none"/>';
+  var ICON_ABOUT = '<circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.8" r=".6" fill="currentColor" stroke="none"/>';
   var ICON_LOGIN = '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/>';
   var ICON_REGISTER = '<circle cx="9" cy="8" r="4"/><path d="M4 21c0-4 3-6 7-6"/><path d="M19 8v6"/><path d="M22 11h-6"/>';
   var ICON_PROFILE = '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>';
@@ -3826,6 +3986,7 @@ function renderSidebar(){
     out += '<button class="sb-item" data-action="open-admin" data-close-sb="1">'+svg(ICON_PANEL)+'<span>Panel de pedidos</span></button>';
   }
   out += '<button class="sb-item" data-action="open-catalog" data-close-sb="1">'+svg(ICON_CATALOG)+'<span>Catálogo</span></button>';
+  out += '<button class="sb-item" data-action="open-about" data-close-sb="1">'+svg(ICON_ABOUT)+'<span>Sobre nosotros</span></button>';
   out += '<button class="sb-item" data-action="open-contact" data-close-sb="1">'+svg(ICON_PHONE)+'<span>Contacto</span></button>';
   out += '<div class="sb-spacer"></div>';
   if(u){
@@ -4238,6 +4399,7 @@ document.addEventListener("click", e=>{
   else if(a==="toggle-pass") togglePass(t.dataset.target);
   else if(a==="open-admin") openAdmin();
   else if(a==="open-catalog"){ e.preventDefault(); closeMega(); openCatalog(); }
+  else if(a==="open-about"){ e.preventDefault(); closeMega(); openAbout(); }
   else if(a==="open-mega") toggleMega();
   else if(a==="close-mega") closeMega();
   else if(a==="mega-cat") megaPickCat(t.dataset.cat);
