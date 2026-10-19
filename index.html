@@ -344,6 +344,36 @@ svg{display:block}
 .prod-img-zoomable{cursor:zoom-in}
 .prod-img-zoomable.zoomed{cursor:zoom-out}
 .prod-img-zoomable.zoomed .prod-photo{transition:transform .05s linear}
+.gal-track{display:flex;width:100%;height:100%;transition:transform .35s cubic-bezier(.22,.61,.36,1);will-change:transform}
+.gal-slide{flex:0 0 100%;min-width:0;height:100%;overflow:hidden;position:relative}
+.prod-img-zoomable{touch-action:pan-y}
+.prod-img-zoomable.zoomed{touch-action:none}
+.prod-img .carousel-arrow{width:38px;height:38px}
+.prod-img .carousel-arrow .ic{width:19px;height:19px}
+.prod-img .carousel-arrow.left{left:8px}
+.prod-img .carousel-arrow.right{right:8px}
+.prod-img .carousel-dots{bottom:10px;gap:6px}
+.prod-img.zoomed .carousel-arrow,.prod-img.zoomed .carousel-dots{display:none}
+@media(min-width:768px){
+.apub-prod-ed .prod-grid>div:last-child{display:flex;flex-direction:column;justify-content:space-between}
+.apub-prod-ed .prod-grid>div:last-child>div{margin-top:0!important}
+.apub-prod-ed .prod-grid>div:last-child>.buy{padding-top:24px}
+.apub-prod-ed .apub-msg:empty{display:none}
+.apub-prod-ed>.apub-notes{margin-top:18px}
+}
+.apub-xs-l{margin:14px 0 0;font-size:12px;font-weight:600;color:var(--muted);font-family:'Poppins',sans-serif}
+.apub-xs-l span{font-weight:400}
+.apub-xs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.apub-xs-cell{position:relative}
+.apub-xs-slot{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:4/5;background:var(--bone);border:1.5px dashed var(--line2);color:var(--muted);cursor:pointer;overflow:hidden;padding:0;transition:border-color .15s,color .15s}
+.apub-xs-slot.has{border-style:solid}
+.apub-xs-slot:hover{border-color:var(--ink);color:var(--ink)}
+.apub-xs-slot img{width:100%;height:100%;object-fit:cover;display:block}
+.apub-xs-plus{font-size:30px;line-height:1;font-weight:300}
+.apub-xs-del{position:absolute;top:4px;right:4px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;background:rgba(20,18,16,.78);color:#fff;font-size:16px;line-height:1;padding:0;cursor:pointer}
+.apub-xs-del:hover{background:#b42318}
+#app .apub-xs-slot{border-radius:var(--r)!important}
+#app .apub-xs-del{border-radius:999px!important}
 .zoom-hint{position:absolute;bottom:12px;right:12px;z-index:2;width:38px;height:38px;border-radius:999px;background:rgba(20,18,16,.62);color:#fff;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;pointer-events:none}
 .zoom-hint svg{width:19px;height:19px}
 .prod-img-zoomable:hover .zoom-hint{opacity:1}
@@ -971,7 +1001,7 @@ input:focus,select:focus,textarea:focus{background:#fff!important;box-shadow:0 0
 .search-panel,.search-wrap{background:#fff;border:0!important;box-shadow:var(--sh-lg);border-radius:0 0 var(--r-lg) var(--r-lg)!important}
 .search-box{background:var(--fill);border:0!important;border-radius:var(--r-pill)}
 #app .search-panel .search-box{display:flex!important}
-.sres{border:0!important}.sres:hover{background:var(--fill)}
+.sres{border:0!important}
 
 /* ---------- limpiar restos editoriales de Avíos Nito ---------- */
 .mq,.bands,.stats{display:none!important}
@@ -997,6 +1027,11 @@ input:focus,select:focus,textarea:focus{background:#fff!important;box-shadow:0 0
 #app input:not(.round),#app select:not(.round),#app textarea:not(.round),#app .reco-card-img,#app .reco-thumb,#app .sres-thumb,
 #app .citem-thumb,#app .oi-thumb,#app .co-sum-thumb,#app .cat-thumb,#app .ao-thumb,#app .prod-thumb{border-radius:var(--r-sm)!important}
 #app .reco-img{border-radius:var(--r)!important}
+/* buscador: etiquetas circulares y selección con esquinas levemente redondeadas */
+#app .sres-flag{border-radius:var(--r-pill)!important;padding:4px 11px}
+#app .sres-item{border-radius:var(--r-sm)!important;padding:12px 10px;border-top:0;margin-top:2px}
+.sres-item:hover{background:var(--fill)}
+.sres-item:hover .sres-thumb{background:#fff}
 /* Grandes */
 #app .prod-img{border-radius:var(--r-lg)!important}
 #app .drawer{border-top-left-radius:var(--r-lg)!important;border-bottom-left-radius:var(--r-lg)!important;border-top-right-radius:0!important;border-bottom-right-radius:0!important}
@@ -1164,7 +1199,7 @@ input:focus,select:focus,textarea:focus{background:#fff!important;box-shadow:0 0
   width:40px;height:40px;color:var(--ink);flex-shrink:0;margin-right:2px}
 @media(hover:hover){.hb-btn:hover{background:var(--fill)}}
 #app .hb-btn{border-radius:var(--r-pill)!important}
-.hb-ic{width:22px;height:22px;position:relative;left:-2px}
+.hb-ic{width:22px;height:22px}
 @keyframes hbSpin360{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .hb-ic.spin{animation:hbSpin360 .5s ease}
 
@@ -1465,6 +1500,7 @@ body.sb-open{overflow:hidden!important;position:fixed!important;width:100%!impor
 .apub-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
 .apub-btn-ghost{background:var(--fill);color:var(--ink);border:0;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;font-size:13.5px;padding:11px 18px;transition:.15s}
 #app .apub-btn-ghost{border-radius:var(--r-pill)!important}
+#app .apub-btn-ghost.apub-cancelbtn{border-radius:10px!important;padding:16px}   /* igual que el botón Guardar cambios */
 .apub-btn-ghost:hover{background:var(--sand)}
 .apub-btn-main{background:var(--accent);color:#fff;border:0;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;font-size:13.5px;padding:11px 22px;transition:.15s}
 #app .apub-btn-main{border-radius:var(--r-pill)!important}
@@ -3318,6 +3354,7 @@ function ovApply(p){
   if(d.desc!=null) p.desc=d.desc;
   if(d.img!=null) p.img=d.img;
   if(d.imgs!=null) p.imgs=d.imgs;
+  if(d.extra!=null) p.extra=d.extra;
   if(d.colors!=null) p.colors=d.colors;
   if(d.price!=null) p.ovPrice=Number(d.price)||0;
   if(d.unit!=null) p.ovUnit=d.unit;
@@ -3387,6 +3424,7 @@ function rebuildCatalog(){
   const visible = fresh.filter(function(c){ return (c.products&&c.products.length)||(c.subs&&c.subs.length); });
   CATS.length = 0; visible.forEach(function(c){ CATS.push(c); });
   reresolveState();
+  try{ searchReindex(); }catch(e){}   // el buscador siempre refleja el estado actual
 }
 rebuildCatalog();   // estado inicial (sin modificaciones) = comportamiento actual
 function pBadge(p){ const s=pState(p); if(s==="nostock") return `<span class="pcard-flag flag-red">SIN STOCK</span>`; if(s==="soon") return `<span class="pcard-flag flag-green">PRÓXIMAMENTE</span>`; return ""; }
@@ -3882,7 +3920,7 @@ function renderProduct(){
   return `<div class="prod fade"><div class="wrap">
     <button class="back" data-action="back" aria-label="Volver">${IC.arrowL}</button>
     <div class="prod-grid">
-      <div class="prod-img${p.img?` prod-img-zoomable`:``}" id="prod-imgbox">${p.img?`<img id="prod-photo" class="prod-photo" src="${imgURL((p.imgs&&p.imgs[color.n])?p.imgs[color.n]:p.img,"w=1000&q=78")}" alt="${esc(p.title)}" decoding="async"><span class="zoom-hint" id="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2M11 8v6M8 11h6"/></svg></span>`:`<span class="big tnum">${num(p.id)}</span><span class="ph">Foto próximamente</span>`}</div>
+      <div class="prod-img${p.img?` prod-img-zoomable`:``}" id="prod-imgbox">${p.img?`${galHTML(p,color)}<span class="zoom-hint" id="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2M11 8v6M8 11h6"/></svg></span>`:`<span class="big tnum">${num(p.id)}</span><span class="ph">Foto próximamente</span>`}</div>
       <div>
         <p class="prod-code tnum">${p.id}</p>
         <h1 class="prod-title">${esc(p.title)}</h1>
@@ -3966,15 +4004,20 @@ function relatedProducts(cur){
 
 /* ================= Buscador ================= */
 const ALL_PRODUCTS = [];
-CATS.forEach(c=>{
-  if(c.subs) c.subs.forEach(s=> s.products.forEach(p=> ALL_PRODUCTS.push({p, cat:c, sub:s})));
-  else (c.products||[]).forEach(p=> ALL_PRODUCTS.push({p, cat:c, sub:null}));
-});
 const norm = s => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-ALL_PRODUCTS.forEach(e=>{
-  e.hay = norm([e.p.title, e.p.id, e.p.desc, e.cat.name, e.sub?e.sub.name:"",
-                e.p.colors.map(c=>c.n).join(" ")].join(" "));
-});
+/* índice del buscador: se reconstruye cada vez que cambia el catálogo (estado, precio, etc.) */
+function searchReindex(){
+  ALL_PRODUCTS.length = 0;
+  CATS.forEach(c=>{
+    if(c.subs) c.subs.forEach(s=> s.products.forEach(p=> ALL_PRODUCTS.push({p, cat:c, sub:s})));
+    else (c.products||[]).forEach(p=> ALL_PRODUCTS.push({p, cat:c, sub:null}));
+  });
+  ALL_PRODUCTS.forEach(e=>{
+    e.hay = norm([e.p.title, e.p.id, e.p.desc, e.cat.name, e.sub?e.sub.name:"",
+                  e.p.colors.map(c=>c.n).join(" ")].join(" "));
+  });
+}
+searchReindex();
 
 function searchProducts(q){
   const terms = norm(q).split(/\s+/).filter(Boolean);
@@ -4065,7 +4108,7 @@ function pickColor(ci){
   document.querySelectorAll(".swatch").forEach((el,i)=>el.classList.toggle("on", i===ci));
   const cn=$("#color-name"); if(cn && state.prod.colors[ci]) cn.textContent = state.prod.colors[ci].n;
   const ph=$("#prod-photo"), pr=state.prod;
-  if(ph && pr.imgs && pr.colors[ci]){ const nm=pr.colors[ci].n; if(pr.imgs[nm]) ph.src=imgURL(pr.imgs[nm],"w=1000&q=78"); }
+  if(ph && pr.imgs && pr.colors[ci]){ const nm=pr.colors[ci].n; if(pr.imgs[nm]){ ph.src=imgURL(pr.imgs[nm],"w=1000&q=78"); galGo(0); } }
 }
 
 
@@ -4347,26 +4390,79 @@ async function catalogPDF(){
   if(btn) btn.classList.remove("loading");
 }
 
+/* ================= Galería de la publicación (foto principal + hasta 3 extra) ================= */
+function galUrls(p,color){
+  const first=(p.imgs&&color&&p.imgs[color.n])?p.imgs[color.n]:p.img;
+  const out=[first]; (p.extra||[]).forEach(u=>{ if(u) out.push(u); });
+  return out;
+}
+function galHTML(p,color){
+  const urls=galUrls(p,color), n=urls.length;
+  if(state.galFor!==p.id){ state.galFor=p.id; state.galI=0; }
+  if(!(state.galI>=0 && state.galI<n)) state.galI=0;
+  const slides=urls.map((u,i)=>`<div class="gal-slide"><img ${i===0?'id="prod-photo" ':''}class="prod-photo" src="${imgURL(u,"w=1000&q=78")}" alt="${esc(p.title)}" decoding="async"${i>0?' loading="lazy"':''} draggable="false"></div>`).join("");
+  let nav="";
+  if(n>1){
+    nav=`<button class="carousel-arrow left gal-arrow" data-action="gal-prev" aria-label="Foto anterior">${IC.chevL}</button>`
+      +`<button class="carousel-arrow right gal-arrow" data-action="gal-next" aria-label="Foto siguiente">${IC.chevR}</button>`
+      +`<div class="carousel-dots gal-dots">${urls.map((u,i)=>`<button class="dot gal-dot${i===state.galI?" on":""}" data-action="gal-goto" data-i="${i}" aria-label="Ir a la foto ${i+1}"></button>`).join("")}</div>`;
+  }
+  return `<div class="gal-track" id="gal-track" style="transform:translateX(-${state.galI*100}%)">${slides}</div>${nav}`;
+}
+function galGo(i){
+  const tr=document.getElementById("gal-track"); if(!tr) return;
+  const n=tr.children.length; if(n<1) return;
+  i=((i%n)+n)%n; state.galI=i;
+  const b=document.getElementById("prod-imgbox"); if(b && b._zoomOff) b._zoomOff();
+  tr.style.transition=""; tr.style.transform="translateX(-"+(i*100)+"%)";
+  document.querySelectorAll(".gal-dot").forEach((d,k)=>d.classList.toggle("on",k===i));
+}
+
 const ZOOM=2.4;
 function initZoom(){
-  const box=$("#prod-imgbox"), img=$("#prod-photo");
-  if(!box||!img||!box.classList.contains("prod-img-zoomable")) return;
+  const box=$("#prod-imgbox"), img0=$("#prod-photo");
+  if(!box||!img0||!box.classList.contains("prod-img-zoomable")) return;
+  const track=$("#gal-track");
+  const nSl=()=>track?track.children.length:1;
+  const curImg=()=>{ const im=box.querySelectorAll(".gal-slide img"); return im[state.galI]||img0; };
+  const noZoomTarget=e=>!!(e.target.closest&&e.target.closest(".carousel-arrow,.gal-dots"));
   let on=false, lastTouch=0;
   function moveTo(clientX, clientY){
     const r=box.getBoundingClientRect();
     let px=(clientX-r.left)/r.width, py=(clientY-r.top)/r.height;
     px=Math.max(0,Math.min(1,px)); py=Math.max(0,Math.min(1,py));
     const tx=(0.5-px)*(ZOOM-1)*100, ty=(0.5-py)*(ZOOM-1)*100;
-    img.style.transform=`scale(${ZOOM}) translate(${tx/ZOOM}%,${ty/ZOOM}%)`;
+    curImg().style.transform=`scale(${ZOOM}) translate(${tx/ZOOM}%,${ty/ZOOM}%)`;
   }
-  function zoomOff(){ on=false; box.classList.remove("zoomed"); img.style.transform=""; }
+  function zoomOff(){ on=false; box.classList.remove("zoomed"); box.querySelectorAll(".gal-slide img").forEach(im=>{ im.style.transform=""; }); }
+  box._zoomOff=zoomOff;
   function zoomOn(x,y){ on=true; box.classList.add("zoomed"); moveTo(x,y); }
   function toggle(x,y){ if(on) zoomOff(); else zoomOn(x,y); }
-  box.addEventListener("click", e=>{ if(Date.now()-lastTouch<600) return; toggle(e.clientX,e.clientY); });
+  box.addEventListener("click", e=>{ if(Date.now()-lastTouch<600) return; if(noZoomTarget(e)) return; toggle(e.clientX,e.clientY); });
   box.addEventListener("mousemove", e=>{ if(on && Date.now()-lastTouch>600) moveTo(e.clientX,e.clientY); });
   box.addEventListener("mouseleave", ()=>{ if(Date.now()-lastTouch>600) zoomOff(); });
-  box.addEventListener("touchstart", e=>{ lastTouch=Date.now(); const t=e.touches[0]; toggle(t.clientX,t.clientY); }, {passive:true});
-  box.addEventListener("touchmove", e=>{ lastTouch=Date.now(); if(on){ const t=e.touches[0]; moveTo(t.clientX,t.clientY); e.preventDefault(); } }, {passive:false});
+  /* táctil: tocar = zoom; deslizar a los costados = cambiar de foto; arrastrar con zoom = mover la imagen */
+  let tx0=0, ty0=0, tdx=0, tdy=0, tmode="", tw=1;
+  box.addEventListener("touchstart", e=>{
+    lastTouch=Date.now();
+    if(noZoomTarget(e)){ tmode="btn"; return; }
+    const t=e.touches[0]; tx0=t.clientX; ty0=t.clientY; tdx=0; tdy=0; tmode=""; tw=box.getBoundingClientRect().width||1;
+  }, {passive:true});
+  box.addEventListener("touchmove", e=>{
+    lastTouch=Date.now(); if(tmode==="btn") return;
+    const t=e.touches[0]; tdx=t.clientX-tx0; tdy=t.clientY-ty0;
+    if(on){ if(Math.abs(tdx)>8||Math.abs(tdy)>8) tmode="pan"; moveTo(t.clientX,t.clientY); e.preventDefault(); return; }
+    if(!tmode && (Math.abs(tdx)>8||Math.abs(tdy)>8)) tmode=(Math.abs(tdx)>Math.abs(tdy) && nSl()>1)?"swipe":"scroll";
+    if(tmode==="swipe"){ e.preventDefault(); track.style.transition="none"; track.style.transform="translateX(calc(-"+(state.galI*100)+"% + "+tdx+"px))"; }
+  }, {passive:false});
+  box.addEventListener("touchend", e=>{
+    lastTouch=Date.now();
+    if(tmode==="btn"){ tmode=""; return; }
+    if(tmode==="swipe"){ const th=Math.min(60,tw*0.2); galGo(Math.abs(tdx)>th ? state.galI+(tdx<0?1:-1) : state.galI); }
+    else if(tmode===""){ const t=e.changedTouches[0]; toggle(t.clientX,t.clientY); }
+    tmode="";
+  }, {passive:true});
+  box.addEventListener("touchcancel", ()=>{ if(tmode==="swipe") galGo(state.galI); tmode=""; }, {passive:true});
 }
 function setQty(n){
   const mn=pMin(state.prod);
@@ -4942,6 +5038,11 @@ document.addEventListener("click", e=>{
   else if(a==="apub-clear-filter"){ apubState.q=""; apubState.cat=""; render(); }
   else if(a==="apub-new-open"){ apubNew.open=true; render(); window.scrollTo({top:0}); }
   else if(a==="apub-new-photo"){ const f=$("#apub-nfile"); if(f) f.click(); }
+  else if(a==="apub-xs-pick"){ apubXT={form:t.dataset.form, i:parseInt(t.dataset.i,10)}; const f=$("#apub-xfile"); if(f) f.click(); }
+  else if(a==="apub-xs-del"){ apubXsDel(t.dataset.form, parseInt(t.dataset.i,10)); }
+  else if(a==="gal-prev"){ galGo((state.galI||0)-1); }
+  else if(a==="gal-next"){ galGo((state.galI||0)+1); }
+  else if(a==="gal-goto"){ galGo(parseInt(t.dataset.i,10)||0); }
   else if(a==="apub-ed-open"){ apubEditSync(); apubEdit.open[t.dataset.f]=true; apubEdit.dd=false; apubSdOpen=null; apubEditRerender(t.dataset.f); }
   else if(a==="apub-ed-done"){ apubEditSync(); apubEdit.open[t.dataset.f]=false; apubEdit.dd=false; apubSdOpen=null; apubEditRerender(); }
   else if(a==="apub-ed-dd"){ apubEdit.dd=!apubEdit.dd; apubEdRenderColors(); }
@@ -5033,6 +5134,7 @@ document.addEventListener("change", e=>{
   if(e.target.id==="of-cat-filter"){ ofSyncInputs(); ofState.cat=e.target.value; ofListRerender(ofType(ofState.typeId)); return; }
   if(e.target.id==="apub-file"){ apubOnPhotoPick(e.target.files&&e.target.files[0]); return; }
   if(e.target.id==="apub-nfile"){ apubNewOnPhoto(e.target.files&&e.target.files[0]); return; }
+  if(e.target.id==="apub-xfile"){ const fl=e.target.files&&e.target.files[0]; apubXOnPick(fl); try{ e.target.value=""; }catch(_){} return; }
   if(e.target.id==="apub-n-cat"){      // al cambiar la categoría sólo se actualiza la subcategoría, sin redibujar todo
     apubNew.cat=e.target.value; apubNew.sub="";
     const w=document.getElementById("apub-n-subwrap"); if(w) w.innerHTML=apubNewSubHTML(); return;
@@ -5072,7 +5174,7 @@ const APUB_UNITS = [
 ];
 const apubState = { tab:"crear", q:"", cat:"", editingId:null, photoBlob:null, photoPreview:null, saving:false, delView:"activas", confirm:null, working:false, leave:null, ofInfo:null, ofDel:null, ofDelErr:"" };
 
-function openAdminPub(){ if(!(state.user&&state.user.is_owner)) return; closeUserMenu(); apubState.tab="crear"; apubState.editingId=null; apubState.photoBlob=null; apubState.photoPreview=null; apubState.leave=null; apubNewReset(); go("adminpub"); }
+function openAdminPub(){ if(!(state.user&&state.user.is_owner)) return; closeUserMenu(); apubState.tab="crear"; apubState.editingId=null; apubState.photoBlob=null; apubXsFree(apubState); apubState.photoPreview=null; apubState.leave=null; apubNewReset(); go("adminpub"); }
 
 /* ---- Carga del overlay (modificaciones) desde Supabase + caché local ---- */
 function setOverlay(rows){
@@ -5170,6 +5272,7 @@ function renderAdminPub(){
     <div class="wrap apub-body">${body}</div>
     <input type="file" id="apub-file" accept="image/*" style="display:none">
     <input type="file" id="apub-nfile" accept="image/*" style="display:none">
+    <input type="file" id="apub-xfile" accept="image/*" style="display:none">
   </div>`;
 }
 
@@ -5223,7 +5326,7 @@ function apubOpenEdit(id){
   const orig={ title:p.title||"", price:pPrice(p)||0, unit:pUnit(p), min:pMin(p)||0, desc:p.desc||"", med:(pMed(p)||[]).slice(), colors:(p.colors||[]).map(c=>({n:c.n,h:c.h})), dd:false,
     estado:(k==="soon"?"proximamente":(k==="nostock"?"nostock":"normal")) };
   apubEdit.orig=orig; apubEdit.draft=JSON.parse(JSON.stringify(orig)); apubEdit.open={};
-  apubState.editingId=id; apubEdit.dd=false; apubState.photoBlob=null; apubState.photoPreview=null; apubState.saving=false; apubSdOpen=null;
+  apubState.editingId=id; apubEdit.dd=false; apubState.photoBlob=null; apubXsFree(apubState); apubState.photoPreview=null; apubState.saving=false; apubSdOpen=null;
   render(); window.scrollTo({top:0});
 }
 /* pasa lo que hay en los campos abiertos al borrador */
@@ -5286,7 +5389,7 @@ function apubEditDirty(){
     || JSON.stringify(d.med||[])!==JSON.stringify(o.med||[])
     || JSON.stringify(d.colors||[])!==JSON.stringify(o.colors||[])
     || (d.estado||"normal")!==o.estado
-    || !!apubState.photoBlob;
+    || !!apubState.photoBlob || apubXsDirty("edit");
 }
 function apubEditForm(){
   const f=apubFindAdmin(apubState.editingId);
@@ -5305,23 +5408,22 @@ function apubEditForm(){
       <button class="apub-back" data-action="apub-cancel">${IC.arrowL} Volver</button>
       <p class="apub-crumbtxt">${esc(catTxt)}</p>
     </div>
-    <div class="prod apub-prod">
+    <div class="prod apub-prod apub-prod-ed">
     <div class="prod-grid">
       <div>
         <div class="apub-pwrap">
           <div class="prod-img apub-pimg apub-pimg-ed" id="apub-e-imgbox">${prev?`<img class="prod-photo" src="${prev}" alt="Foto de la publicación">`:`<div class="apub-pimg-ph"><b>Sin foto</b></div>`}</div>
           <button type="button" class="apub-pencil apub-pencil-photo" data-action="apub-pick-photo" aria-label="Cambiar foto" title="Cambiar foto">${APUB_PENCIL}</button>
         </div>
-        <div class="apub-notes">
-          <p class="apub-note">El fondo de la imagen debe ser color <b>arena #efe7da</b>, igual que el resto del catálogo.</p>
-          <p class="apub-note">El formato ideal para las imágenes es la proporción <b>4:5</b> (vertical).</p>
-        </div>
+        ${apubXsHTML("edit")}
       </div>
       <div>
+        <div class="apub-ed-head">
         <p class="prod-code tnum">${esc(p.id)}</p>
         <div class="apub-fld">
           ${o("title")?`<input id="apub-e-title" class="apub-input apub-e-title" maxlength="40" value="${esc(d.title)}" aria-label="Título">`:`<h1 class="prod-title">${esc(d.title)}</h1>`}
           ${o("title")?apubDoneBtn("title"):apubPencil("title","título")}
+        </div>
         </div>
         <div class="apub-fld apub-fld-price">
           ${o("price")
@@ -5371,6 +5473,10 @@ function apubEditForm(){
         </div>
       </div>
     </div>
+    <div class="apub-notes">
+      <p class="apub-note">El fondo de la imagen debe ser color <b>arena #efe7da</b>, igual que el resto del catálogo.</p>
+      <p class="apub-note">El formato ideal para las imágenes es la proporción <b>4:5</b> (vertical).</p>
+    </div>
     </div>`;
 }
 
@@ -5399,9 +5505,50 @@ async function apubOnPhotoPick(file){
     if(box) box.innerHTML=`<img class="prod-photo" src="${apubState.photoPreview}" alt="Foto de la publicación">`;
   }catch(err){ apubMsg(err.message||"No se pudo cargar la foto", true); }
 }
+/* ---- Fotos adicionales: 3 mini slots 4:5 (Crear y Editar) ---- */
+const APUB_XN=3;
+let apubXT=null;   // slot elegido: {form:"new"|"edit", i}
+function apubXsMake(urls){ const a=[]; for(let i=0;i<APUB_XN;i++) a.push({url:(urls&&urls[i])||"", blob:null, preview:null}); return a; }
+function apubXsFree(st){ if(!st) return; if(st.xs) st.xs.forEach(x=>{ if(x&&x.preview){ try{ URL.revokeObjectURL(x.preview); }catch(e){} } }); st.xs=null; }
+function apubEditExtra(){ const r=CATALOG_OV[apubState.editingId]; return (r&&r.data&&r.data.extra)||[]; }
+function apubXsState(form){ const st=(form==="new")?apubNew:apubState; if(!st.xs) st.xs=apubXsMake(form==="edit"?apubEditExtra():[]); return st; }
+function apubXsDirty(form){
+  const st=(form==="new")?apubNew:apubState; if(!st.xs) return false;
+  const o=(form==="edit")?apubEditExtra():[];
+  return st.xs.some((x,i)=>!!x.blob || (x.url||"")!==(o[i]||""));
+}
+function apubXsHTML(form){
+  const st=apubXsState(form);
+  const cells=st.xs.map((x,i)=>{
+    const src=x.preview||(x.url?imgURL(x.url,"w=300&q=72"):"");
+    return `<div class="apub-xs-cell"><button type="button" class="apub-xs-slot${src?" has":""}" data-action="apub-xs-pick" data-form="${form}" data-i="${i}" aria-label="${src?"Cambiar":"Agregar"} foto adicional ${i+1}">${src?`<img src="${src}" alt="Foto adicional ${i+1}">`:`<span class="apub-xs-plus">+</span>`}</button>${src?`<button type="button" class="apub-xs-del" data-action="apub-xs-del" data-form="${form}" data-i="${i}" aria-label="Quitar foto adicional ${i+1}" title="Quitar">×</button>`:""}</div>`;
+  }).join("");
+  return `<div id="apub-xs-${form}"><p class="apub-xs-l">Fotos adicionales <span>(opcional · hasta 3)</span></p><div class="apub-xs">${cells}</div></div>`;
+}
+function apubXsRender(form){ const el=document.getElementById("apub-xs-"+form); if(el) el.outerHTML=apubXsHTML(form); }
+async function apubXOnPick(file){
+  const t=apubXT; apubXT=null; if(!file||!t) return;
+  const st=apubXsState(t.form);
+  try{
+    const blob=await apubCompress(file,1200);
+    const x=st.xs[t.i]; if(!x) return;
+    if(x.preview){ try{ URL.revokeObjectURL(x.preview); }catch(e){} }
+    x.blob=blob; x.preview=URL.createObjectURL(blob);
+    apubXsRender(t.form);
+  }catch(err){ (t.form==="new"?apubNewMsg:apubMsg)((err&&err.message)||"No se pudo cargar la foto", true); }
+}
+function apubXsDel(form,i){
+  const st=apubXsState(form); const x=st.xs[i]; if(!x) return;
+  if(x.preview){ try{ URL.revokeObjectURL(x.preview); }catch(e){} }
+  x.blob=null; x.preview=null; x.url="";
+  apubXsRender(form);
+}
+async function apubXsDeleteStored(urls){
+  for(const u of (urls||[])){ const pth=apubStoragePath(u); if(pth){ try{ await sb.storage.from("productos").remove([pth]); }catch(e){} } }
+}
 function apubStoragePath(url){ const m=/\/productos\/(.+)$/.exec(url||""); return m?decodeURIComponent(m[1].split("?")[0]):null; }
-async function apubUploadPhoto(){
-  const blob=apubState.photoBlob; if(!blob) return null;
+async function apubUploadPhoto(blob0){
+  const blob=blob0||apubState.photoBlob; if(!blob) return null;
   const name="p_"+Date.now()+"_"+Math.random().toString(36).slice(2,8)+".jpg";
   const up=await sb.storage.from("productos").upload(name, blob, {contentType:"image/jpeg", upsert:false});
   if(up.error) throw up.error;
@@ -5435,16 +5582,25 @@ async function apubSave(){
   if(JSON.stringify(med)!==JSON.stringify(o.med)) data.med=med;
   const colorsNow=(d.colors||[]).map(c=>({n:c.n,h:c.h}));
   if(JSON.stringify(colorsNow)!==JSON.stringify(o.colors||[])) data.colors=colorsNow;
-  const changed = JSON.stringify(data)!==JSON.stringify(prevData) || estado!==o.estado || !!apubState.photoBlob;
-  if(!changed){ apubState.editingId=null; apubState.photoBlob=null; apubState.photoPreview=null; render(); return; }
+  const changed = JSON.stringify(data)!==JSON.stringify(prevData) || estado!==o.estado || !!apubState.photoBlob || apubXsDirty("edit");
+  if(!changed){ apubState.editingId=null; apubState.photoBlob=null; apubXsFree(apubState); apubState.photoPreview=null; render(); return; }
   /* 3) estado "guardando" sin redibujar, para conservar lo escrito si algo falla */
   apubState.saving=true;
   const saveBtn=document.querySelector('[data-action="apub-save"]');
   const setBtn=(busy)=>{ if(saveBtn){ saveBtn.textContent=busy?"Guardando…":"Guardar cambios"; saveBtn.classList.toggle("loading",busy); } };
   setBtn(true); apubMsg("", false);
-  let uploaded=null;
+  let uploaded=null; const upX=[];
   try{
-    let oldPhoto=null;
+    let oldPhoto=null; let oldX=[];
+    if(apubXsDirty("edit")){
+      const xo=(prevData.extra||[]); const fin=[];
+      for(let i=0;i<APUB_XN;i++){
+        const x=apubState.xs[i]; let u=x.url||"";
+        if(x.blob){ const nu=await apubUploadPhoto(x.blob); if(nu){ upX.push(apubStoragePath(nu)); u=nu; } }
+        fin.push(u); if(xo[i] && xo[i]!==u) oldX.push(xo[i]);
+      }
+      data.extra=fin;
+    }
     if(apubState.photoBlob){
       const url=await apubUploadPhoto();
       if(url){ uploaded=apubStoragePath(url); if(prevData.img && /^https?:/i.test(prevData.img)) oldPhoto=prevData.img; data.img=url; data.imgs={}; }
@@ -5454,11 +5610,13 @@ async function apubSave(){
     if(error) throw error;
     if(!saved || !saved.length) throw new Error("Supabase no guardó el cambio (revisá los permisos de administrador).");
     if(oldPhoto){ const pth=apubStoragePath(oldPhoto); if(pth){ try{ await sb.storage.from("productos").remove([pth]); }catch(e){} } }
+    if(oldX.length) apubXsDeleteStored(oldX);
     CATALOG_OV[id]=row; cacheOverlay(); rebuildCatalog();
-    apubState.saving=false; apubState.editingId=null; apubState.photoBlob=null; apubState.photoPreview=null;
+    apubState.saving=false; apubState.editingId=null; apubState.photoBlob=null; apubXsFree(apubState); apubState.photoPreview=null;
     render();
   }catch(err){
     if(uploaded){ try{ await sb.storage.from("productos").remove([uploaded]); }catch(e){} }
+    if(upX.length){ try{ await sb.storage.from("productos").remove(upX); }catch(e){} }
     apubState.saving=false; setBtn(false);
     apubMsg((err&&err.message)?("No se pudo guardar: "+err.message):"No se pudo guardar.", true);
   }
@@ -5590,6 +5748,7 @@ async function apubDelConfirm(){
       if(error) throw error;
       if(!gone || !gone.length) throw new Error("Supabase no borró la fila (revisá los permisos de administrador).");
       if(img && /^https?:/i.test(img)){ const pth=apubStoragePath(img); if(pth){ try{ await sb.storage.from("productos").remove([pth]); }catch(e){} } }
+      if(row.data&&row.data.extra) apubXsDeleteStored(row.data.extra);
       delete CATALOG_OV[id];
     } else {
       const prev=CATALOG_OV[id]||{}; const data=prev.data||{};
@@ -5643,7 +5802,7 @@ function apubNewReset(){
   if(apubDoneTimer){ clearTimeout(apubDoneTimer); apubDoneTimer=null; }
   if(apubNew.photoPreview) try{ URL.revokeObjectURL(apubNew.photoPreview); }catch(e){}
   apubNew.open=false; apubNew.done=false; apubNew.ddOpen=false;
-  apubNew.cat=""; apubNew.sub=""; apubNew.colors=[]; apubNew.photoBlob=null; apubNew.photoPreview=null; apubNew.saving=false;
+  apubNew.cat=""; apubNew.sub=""; apubNew.colors=[]; apubNew.photoBlob=null; apubXsFree(apubNew); apubNew.photoPreview=null; apubNew.saving=false;
   apubNew.f={ title:"", price:"", unit:"u", min:"100", med:"", desc:"", estado:"normal" };
 }
 /* lee los valores actuales del DOM al estado (antes de re-renderizar o de salir) */
@@ -5662,7 +5821,7 @@ function apubNewDirty(){
   try{ apubNewSync(); }catch(e){}
   const f=apubNew.f;
   return !!( String(f.title||"").trim() || String(f.price||"").trim() || String(f.med||"").trim() || String(f.desc||"").trim()
-    || apubNew.colors.length || apubNew.photoBlob || apubNew.cat || apubNew.sub
+    || apubNew.colors.length || apubNew.photoBlob || apubXsDirty("new") || apubNew.cat || apubNew.sub
     || f.unit!=="u" || String(f.min)!=="100" || f.estado!=="normal" );
 }
 function apubNewActive(){ return state.view==="adminpub" && apubState.tab==="crear" && apubNew.open && !apubNew.done; }
@@ -5726,6 +5885,7 @@ function apubCreateForm(){
       <div>
         <div class="prod-img apub-pimg" id="apub-n-imgbox" data-action="apub-new-photo" role="button" tabindex="0" aria-label="Subir foto">${apubNewImgHTML()}</div>
         <button class="apub-btn-ghost apub-photobtn" id="apub-n-photobtn" data-action="apub-new-photo">${apubNew.photoPreview?"Cambiar foto":"Subir foto"}</button>
+        ${apubXsHTML("new")}
         <div class="apub-notes">
           <p class="apub-note">El fondo de la imagen debe ser color <b>arena #efe7da</b>, igual que el resto del catálogo.</p>
           <p class="apub-note">El formato ideal para las imágenes es la proporción <b>4:5</b> (vertical).</p>
@@ -5798,7 +5958,7 @@ async function apubNewSave(){
   const btn=document.querySelector('[data-action="apub-new-save"]');
   const setBtn=busy=>{ if(btn){ btn.textContent=busy?"Publicando…":"Publicar"; btn.classList.toggle("loading",busy); } };
   setBtn(true); apubNewMsg("", false);
-  let uploaded=null;
+  let uploaded=null; const upX=[];
   try{
     const name="p_"+Date.now()+"_"+Math.random().toString(36).slice(2,8)+".jpg";
     const up=await sb.storage.from("productos").upload(name, apubNew.photoBlob, {contentType:"image/jpeg", upsert:false});
@@ -5808,6 +5968,15 @@ async function apubNewSave(){
     const colors=apubNew.colors.map(k=>C[k]).filter(Boolean);
     const data={ title:"N° "+tt, price, unit:f.unit||"u", min:minQ,
       med:(f.med||"").trim()?[(f.med||"").trim()]:[], desc:(f.desc||"").trim(), img:imgUrl, imgs:{}, colors };
+    if(apubXsDirty("new")){
+      const fin=[];
+      for(let i=0;i<APUB_XN;i++){
+        const x=apubNew.xs[i]; let u="";
+        if(x && x.blob){ const nu=await apubUploadPhoto(x.blob); if(nu){ upX.push(apubStoragePath(nu)); u=nu; } }
+        fin.push(u);
+      }
+      if(fin.some(Boolean)) data.extra=fin;
+    }
     const row={ id, es_nueva:true, estado:f.estado||"normal", cat:apubNew.cat, sub:apubNew.sub||null, data };
     const { data:saved, error } = await sb.from("products").upsert(row, { onConflict:"id" }).select();
     if(error) throw error;
@@ -5818,6 +5987,7 @@ async function apubNewSave(){
     apubDoneTimer=setTimeout(()=>{ apubDoneTimer=null; apubNew.done=false; if(state.view==="adminpub" && apubState.tab==="crear") render(); }, 1000);
   }catch(err){
     if(uploaded){ try{ await sb.storage.from("productos").remove([uploaded]); }catch(e){} }   // no dejar fotos huérfanas
+    if(upX.length){ try{ await sb.storage.from("productos").remove(upX); }catch(e){} }
     apubNew.saving=false; setBtn(false);
     apubNewMsg((err&&err.message)?("No se pudo publicar: "+err.message):"No se pudo publicar.", true);
   }
@@ -5826,7 +5996,7 @@ async function apubNewSave(){
 /* ---- Aviso al salir con datos sin guardar ---- */
 function apubLeaveAsk(pending,kind){ pending=pending||{}; pending.kind=kind||"new"; apubState.leave=pending; apubSyncModal(); }
 function apubLeaveStay(){ apubState.leave=null; apubSyncModal(); }
-function apubEditReset(){ apubState.editingId=null; apubState.photoBlob=null; if(apubState.photoPreview){ try{ URL.revokeObjectURL(apubState.photoPreview); }catch(e){} } apubState.photoPreview=null; apubEdit.draft=null; apubEdit.orig=null; apubEdit.open={}; apubEdit.dd=false; }
+function apubEditReset(){ apubState.editingId=null; apubState.photoBlob=null; apubXsFree(apubState); if(apubState.photoPreview){ try{ URL.revokeObjectURL(apubState.photoPreview); }catch(e){} } apubState.photoPreview=null; apubEdit.draft=null; apubEdit.orig=null; apubEdit.open={}; apubEdit.dd=false; }
 function apubLeaveProceed(p){
   if(!p) return;
   if(p.state!==undefined){ try{ applyHist(p.state); }catch(e){} }
@@ -5851,7 +6021,7 @@ document.addEventListener("click", function(e){
   if(!apubNewActive()) return;
   const t=e.target.closest("[data-action]"); if(!t) return;
   const a=t.dataset.action;
-  if(a.indexOf("apub-new-")===0 || a.indexOf("apub-leave-")===0 || a.indexOf("apub-sd-")===0 || APUB_FREE_ACTIONS.indexOf(a)>=0) return;
+  if(a.indexOf("apub-new-")===0 || a.indexOf("apub-xs-")===0 || a.indexOf("apub-leave-")===0 || a.indexOf("apub-sd-")===0 || APUB_FREE_ACTIONS.indexOf(a)>=0) return;
   if(a==="apub-tab" && t.dataset.tab==="crear") return;
   if(!apubNewDirty()){ apubNewReset(); return; }      // formulario vacío: se puede salir sin aviso
   e.preventDefault(); e.stopImmediatePropagation();
@@ -5862,7 +6032,7 @@ document.addEventListener("click", function(e){          // aviso al salir de la
   if(!(state.view==="adminpub" && apubState.tab==="editar" && apubState.editingId)) return;
   const t=e.target.closest("[data-action]"); if(!t) return;
   const a=t.dataset.action;
-  if(APUB_ED_OK.some(x=>a.indexOf(x)===0) || a==="apub-save" || a==="apub-pick-photo" || APUB_FREE_ACTIONS.indexOf(a)>=0) return;
+  if(APUB_ED_OK.some(x=>a.indexOf(x)===0) || a==="apub-save" || a==="apub-pick-photo" || a.indexOf("apub-xs-")===0 || APUB_FREE_ACTIONS.indexOf(a)>=0) return;
   if(!apubEditDirty()) return;
   e.preventDefault(); e.stopImmediatePropagation();
   apubLeaveAsk({el:t},"edit");
