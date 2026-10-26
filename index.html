@@ -3366,7 +3366,7 @@ function pState(p){ if(p&&p.nostock) return "nostock"; if(p&&p._soon) return "so
    reconstruye el catálogo visible (CATS) aplicando las modificaciones encima.
    Así, al ocultar/editar publicaciones no se pierde nada y todo es reversible.
    ============================================================ */
-const FORCE_NOSTOCK = ["RY-P70","RY-P71","RY-477"];
+const FORCE_NOSTOCK = ["RY-P70","RY-P71","RY-477","RY-P28","RY-P141","RY-P25","RY-465","RY-450","RY-464","RY-427"];
 const CATS_ALL = JSON.parse(JSON.stringify(CATS));   // copia completa original (incluye precio 0)
 let CATALOG_OV = {};                                  // id -> fila de modificación (tabla products)
 
